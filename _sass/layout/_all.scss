@@ -1,4 +1,4 @@
-.layout--archive {
+.layout--all {
   .site-tags {
     margin-bottom: map-get($base, vertical-space-lg) * 2;
     display: block;
@@ -13,35 +13,41 @@
       width: 100%;
     }
     & > input {
-      -webkit-appearance: none; /* fix iOS don't display box-shadow properly */
-      display: inline-block;
-      width: 100%;
+      border-radius: 2rem;
       padding: .2rem 1.8rem;
-      margin: 0;
-      border: none;
-      border-radius: map-get($button, pill-radius);
-      @include clickable($text-color, $text-background-color);
       @include transition(box-shadow map-get($animation, duration) map-get($animation, timing-function));
+      -webkit-appearance: none; /* fix iOS don't display box-shadow properly */
+      width: 100%;
+      display: inline-block;
+      border: none;
+      margin: 0;
+      background-color: $text-background-color;
+      @include focus() {
+        @include box-shadow();
+      }
     }
-    & > .search-box__icon-search, & > .search-box__icon-clear {
+    & > .icon-search, & > .icon-clear {
       position: absolute;
-      vertical-align: middle;
       top: 50%;
       @include transform(translateY(-50%));
+      display: inline-block;
+      vertical-align: middle;
+      font-size: map-get($base , font-size-sm);
     }
-    &.not-empty > .search-box__icon-clear {
+    &.not-empty > .icon-clear {
       display: block;
     }
-    & > .search-box__icon-clear {
+    & > .icon-clear {
       display: none;
-      right: .3rem;
+      right: .8rem;
+      @include link-colors($text-color-l, $text-color-d);
     }
-    & > .search-box__icon-search {
+    & > .icon-search {
       left: .5rem;
     }
   }
 
-  & > .layout--archive__result {
+  & > .layout--all__result {
     margin: map-get($base, vertical-space-lg) 0;
     section {
       &:not(:last-child) {
@@ -62,7 +68,7 @@
         }
         .link {
           font-size: 1rem;
-          @include link-colors($text-color-d, $main-color-1);
+          @include link-colors($text-color-d, $main-color-1, $main-color-1);
         }
       }
     }
@@ -71,7 +77,7 @@
     & > .site-tags {
       display: none;
     }
-    & > .layout--archive__result {
+    & > .layout--all__result {
       section {
         ul > li {
           .date {

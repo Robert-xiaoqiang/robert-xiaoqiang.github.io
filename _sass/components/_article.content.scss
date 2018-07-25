@@ -159,15 +159,17 @@
       margin-bottom: 0;
     }
     li {
+      margin: 0;
       p {
-        margin: map-get($base, vertical-space);
+        margin: 0;
       }
     }
   }
   dl {
     dt, dd {
+      margin: 0;
       p {
-        margin: map-get($base, vertical-space);
+        margin: 0;
       }
     }
     dt {

@@ -1,3 +1,9 @@
+---
+title: MVVM-Model-Report
+key: 20180725
+tags: MVVM C++  template
+---
+
 # 目录
 - [DSV Model Design](#dsv-model-design)
    - [设计任务](#设计任务)
