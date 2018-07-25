@@ -1,8 +1,8 @@
 - Hi, I'm Xiaoqiang Wang. I'm crazy about technology and sticking to learning!
 
 | When | Where | What|
-|----------|:---------:|---------:|
-|2016 - Now| ZJU | Undergraduate Computer Science|
+|:----------|:---------:|:---------:|
+|2016 - Now| ZJU      | Undergraduate Computer Science|
 |To be continue|||
 
 ### Skill
