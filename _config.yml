@@ -16,7 +16,7 @@
 
 ## => Site Settings
 ##############################
-text_skin: default # "default" (default), "dark", "forest", "ocean", "chocolate", "orange"
+text_skin: orange # "default" (default), "dark", "forest", "ocean", "chocolate", "orange"
 highlight_theme: default # "default" (default), "tomorrow", "tomorrow-night", "tomorrow-night-eighties", "tomorrow-night-blue", "tomorrow-night-bright"
 url     : / # the base hostname & protocol for your site e.g. https://www.someone.com
 baseurl : # does not include hostname
@@ -43,11 +43,13 @@ author:
   facebook  : xiaoqiang.wang.7927
   twitter   : # "user_name" the last part of your profile url, e.g. https://twitter.com/user_name
   github    : Robert-xiaoqiang
-  linkedin  : # "user_name" the last part of your profile url, e.g. https://www.linkedin.com/in/user_name/
+  linkedin  : xiaoqiang-wang-0596ba166 # "user_name" the last part of your profile url, e.g. https://www.linkedin.com/in/user_name/
   googleplus: 112893389060605880488 # "user_id"   the last part of your profile url, e.g. https://plus.google.com/u/0/user_id
   weibo     : # "user_id"   the last part of your profile url, e.g. https://www.weibo.com/user_id/profile?...
   douban    : # "user_name" the last part of your profile url, e.g. https://www.douban.com/people/user_name/
-
+  qq        : 3479297544
+  zhihu     : xiao-qiang-50-52-87
+  weixin    : codingIndomitableQ
 ## => GitHub Repository (if the site is hosted by GitHub)
 ##############################
 repository: Robert-xiaoqiang/robert-xiaoqiang.github.io
@@ -108,16 +110,6 @@ comments:
   ## Disqus
   disqus:
     shortname: robert-xiaoqiang-github-io
-
-  ## Gitalk
-  # please refer to https://github.com/gitalk/gitalk for more info.
-  gitalk:
-    clientID    : # GitHub Application Client ID
-    clientSecret: # GitHub Application Client Secret
-    repository  : # GitHub repo
-    owner       : # GitHub repo owner
-    admin: # GitHub repo owner and collaborators, only these guys can initialize GitHub issues, IT IS A LIST.
-      # - your GitHub Id
 
 
 ## => Pageview
