@@ -9,7 +9,7 @@
 ### Skill
 
 - Master: Chinese
-- Naive: C/C++, JS, html
+- Naive: C/C++, JS, HTML
 - Amateur: Python, Java, Bash
 
 ### Framwork & Tool
