@@ -15,6 +15,7 @@ tags: JavaScript Reference
 - 函数调用
    - f();
    - 声明后整体括起来(); 此时圆括号为必须;
+
 ```JavaScript
    (function f()
    {
@@ -26,7 +27,10 @@ tags: JavaScript Reference
        
    })();   
 ```
+
    -  绑定后直接调用, 此时圆括号***不是必须***
+
+
 ```JavaScript
    var fo = function()
    {
@@ -38,5 +42,6 @@ tags: JavaScript Reference
        
    }();   
 ```
-   - 上述语法的本质是**JS中Binding/Reference后返回的是Left OPerand**
+
+   - 上述语法的本质是**JS中Binding/Reference后返回的是left operand**
    - ** 类似C/CPP, 不同于Python**
