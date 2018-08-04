@@ -44,4 +44,5 @@ tags: JavaScript Reference
 ```
 
    - 上述语法的本质是**JS中Binding/Reference后返回的是left operand**
-   - ** 类似C/CPP, 不同于Python**
+   - **类似C/CPP, 不同于Python**
+

@@ -109,7 +109,7 @@ comments:
   provider: disqus # false (default), "disqus", "gitalk", "custom"
   ## Disqus
   disqus:
-    shortname: robert-xiaoqiang-github-io
+    shortname: qindomitable
 
 
 ## => Pageview
