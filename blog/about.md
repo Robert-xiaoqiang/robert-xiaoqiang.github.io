@@ -4,7 +4,7 @@
 | When | Where | What|
 |:----------|:---------:|:---------:|
 |2016 - Now| ZJU | Undergraduate Computer Science|
-|To be continue|...|...|
+|To be continued|...|...|
 
 ### Skill
 
