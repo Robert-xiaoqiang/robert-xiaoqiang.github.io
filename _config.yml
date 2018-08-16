@@ -106,10 +106,17 @@ sources: # bootcdn (default), unpkg
 ## => Comments
 ##############################
 comments:
-  provider: disqus # false (default), "disqus", "gitalk", "custom"
+  ## provider: disqus # false (default), "disqus", "gitalk", "custom"
+  provider: gitalk
   ## Disqus
   disqus:
     shortname: qindomitable
+  gitalk:       ## by Github issues mechanism
+    clientID    : b0c28b477fb4c8a554e5
+    clientSecret: 0675e9b6a9984ec4d467db9f70e0d39292d1f48d
+    repository  : qindomitable-comments
+    owner       : Robert-xiaoqiang
+    admin: Robert-xiaoqiang
 
 
 ## => Pageview
