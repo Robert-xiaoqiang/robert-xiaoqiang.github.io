@@ -19,7 +19,7 @@ tags: JavaScript
 - Function, Date, RegExp, Array, Customized Type(等等种种引用类型)
    - 先toString(), 再遵循第一条
 
-<!-- more -->
+<!--more-->
 
 #### T -> String/字符串
 > toString()方法
