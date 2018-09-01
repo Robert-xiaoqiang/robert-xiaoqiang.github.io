@@ -8,6 +8,8 @@ tags: JavaScript
 
 #### T -> Number/算数类型
 > Number() 显式构造
+> 
+
 - String
    - 空 => 0
    - 合法字面值 => parse正确
@@ -19,15 +21,13 @@ tags: JavaScript
 - Function, Date, RegExp, Array, Customized Type(等等种种引用类型)
    - 先toString(), 再遵循第一条
 
-<<<<<<< HEAD
 <!--more-->
-=======
-<!-- more -->
->>>>>>> 36c29e62bd32756c450f45fff13f0fc5f13a8596
 
 #### T -> String/字符串
 > toString()方法
 > String()显式构造
+> 
+
 - Number
    - 格式化输出
 - 'true' 'false' 'null' 'undefined' 'NaN'
@@ -40,6 +40,9 @@ tags: JavaScript
 #### T -> Boolean/布尔类型
 > 没有其他中间过程的隐式转换
 > 任何引用类型(Object)均为true
+> **布尔**等价于**值类型布尔**, 即true/false, T/F
+> 
+
 - 5兄弟为false, 其余为true
 - String中空字符串
 - Number中0, 0.0
@@ -47,7 +50,10 @@ tags: JavaScript
 - undefiend
 - null
 
-`注意: ! !! if for while 触发Boolean转换, 一般先进行Evaluate`
+`注意: ! !! ? : if for while 触发Boolean转换, 一般先进行Evaluate`
+`注意: && || 是脚本式返回值 即左/右operand, 然后一般触发如上转换`
+
+-  **注意:** ***然后一般***
 
 #### == 隐式转换规则
 > 与===的唯一差别是不同type时是否进行ITC
