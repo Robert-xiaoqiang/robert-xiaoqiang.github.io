@@ -50,7 +50,7 @@ tags: JavaScript
 - undefiend
 - null
 
-`注意: ! !! ? : if for while 触发Boolean转换, 一般先进行Evaluate`
+`注意: ! !! ? : if for while 触发Boolean转换, 一般先进行Evaluate` <br/>
 `注意: && || 是脚本式返回值 即左/右operand, 然后一般触发如上转换`
 
 -  **注意:** ***然后一般***
