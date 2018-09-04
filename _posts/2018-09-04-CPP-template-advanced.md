@@ -54,6 +54,24 @@ extern float f(int a, int b);       // 函数模板
 > 某种程度上, 函数模板显式模板参数已经定死参数类型, 可以进行较为灵活的类型转换
 > 
 
+- 有函数指针进行函数模板参数推导时, 加之重载, 可能需要显式函数模板参数
+
+```CPP
+// 函数声明
+void func(int (*)(const string&, const string&));
+void func(int (*)(const int&, const int&)); // 重载
+
+// 函数模板前置声明
+template <typename T>
+int compare(const T&, const T&);
+
+// Error
+func(compare);
+
+// Yep
+func(compare<int>);
+```
+
 #### auto 类型指示符(type specifier)
 - 定义一定要初始化, 类型推导
 - 逗号连续声明, 初始化, 推导必须相同
@@ -62,10 +80,74 @@ extern float f(int a, int b);       // 函数模板
 - 去顶层const => 保留底层const
 - 加引用时, 即auto& 时会保留顶层const
 
-
 #### decltype(exp) 类型指示符(type specifier)
 - 推导后, 不求值, 可以不进行对象定义, 可以进行尾值返回类型声明
 - 作用于单个变量/对象 => 完全类型+可选CV => 必要初始化动作
 - 作用于表达式 => 表达式结果类型 => `r` `r + 0` `*p`
 - 特例: `decltype((i))` => ()是优先级 => 特使EXP => 永远T&返回
+
+#### 实际类型与模板形参T(前缀)本质不同 => T多了推导环节, T中可能含有CV
+- 左值引用的函数模板参数的类型推导
+> 与一般意义的绑定规则一致, 引用const永远是底层的(加在对象上的)
+> 参数T可以推导出const限定符
+> 
+
+```CPP
+// 函数模板前置声明
+template <typename T>
+void f1(T&);
+
+int i;
+const int ci;
+
+f1(i);  // T == int
+f1(ci); // T == const int
+f1(0);  // Error! 无法绑定右值
+```
+
+- const左值引用的函数模板参数的类型推导
+> 可以绑定任何东西, 本身不会推导出const
+> 
+
+```CPP
+// 函数模板前置声明
+template <typename T>
+void f2(const T&);
+
+int i;
+const int ci;
+
+f2(i);  // T == int
+f2(ci); // T == int
+f2(0);  // T == int
+```
+
+`注意: 此时表面上看好像左值引用可以绑定const左值, 而实际是参数T推导出了const qualifier`
+
+- 右值引用的函数模板参数的类型推导
+> 理想情况只能绑定右值, 不会推导出const => 因为const右值引用无意义
+> 但如下的特例规则是及其美妙的
+
+```CPP
+template <typename T> void f3(T&&);
+f3(0.0f); // T == float
+```
+
+- 例外规则1 => 好像右值引用绑定左值 => WOC => 666
+```CPP
+template <typename T> void f3(T&&);
+f3(0.0f); // T == float
+
+float fp = 0.0F;
+f3(fp);   // T == float& => float& && 折叠为左值引用
+```
+
+- 例外规则2 => 引用折叠(引用的引用)形成后, 即可进行折叠为左值引用(除去一种特例折叠为右值引用)
+> X& &, X& &&, X&& & => X&
+> X&& &&                      => X&&
+> 
+
+- 注意引用的引用(引用折叠)无法直接的用声明语法写出, 但可用于
+- typedef/using alias声明
+- F/C模板参数的使用 + 推导
 
