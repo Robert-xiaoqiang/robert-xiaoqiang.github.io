@@ -92,6 +92,7 @@ func(compare<int>);
 > 参数T可以推导出const限定符, 但本身咩有const限定
 > 
 
+
 ```CPP
 // 函数模板前置声明
 template <typename T>
@@ -107,9 +108,11 @@ f1(0);  // Error! 无法绑定右值
 
 `注意理解: 此时表面上看好像左值引用可以绑定const左值, 而实际是参数T推导出了const qualifier => 即T& 既可以看做左值引用, 也可以看做const左值引用(当且仅当面临const实参进行推导的时候)`
 
+
 - const左值引用的函数模板参数的类型推导
 > 可以绑定任何东西, 本身不会推导出const
 > 
+
 
 ```CPP
 // 函数模板前置声明
@@ -148,6 +151,7 @@ f3(cfp);  // T == const float& => 折叠后的const左值引用绑定const左值
 > X& &, X& &&, X&& & => X&
 > X&& &&                      => X&&
 > X 有无const无所谓
+
 
 - 注意引用的引用(引用折叠)无法直接的用声明语法写出, 但可用于
 - typedef/using alias声明
