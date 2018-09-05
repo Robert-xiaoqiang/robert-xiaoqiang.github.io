@@ -137,6 +137,8 @@ f3(0.0f); // T == float
 ```
 
 - 例外规则1 => 好像右值引用绑定左值 => WOC => 666
+
+
 ```CPP
 template <typename T> void f3(T&&);
 f3(0.0f); // T == float
@@ -147,10 +149,12 @@ f3(fp);   // T == float& => float& && 折叠为左值引用
 f3(cfp);  // T == const float& => 折叠后的const左值引用绑定const左值
 ```
 
+
 - 例外规则2 => 引用折叠(引用的引用)形成后, 即可进行折叠为左值引用(除去一种特例折叠为右值引用)
 > X& &, X& &&, X&& & => X&
 > X&& &&                      => X&&
 > X 有无const无所谓
+> 
 
 
 - 注意引用的引用(引用折叠)无法直接的用声明语法写出, 但可用于
@@ -165,7 +169,7 @@ f3(cfp);  // T == const float& => 折叠后的const左值引用绑定const左值
 - How?
 
 `typename 前置 => 模板默认解析static数据成员, 显示类型成员(类型/类型alias)`
-`template 特殊解析`
+`template 特殊解析了解一下`
 
 ```CPP
 // std::move 实现
