@@ -12,7 +12,7 @@ tags: CPP template
 - 右值/左值差别 => 语义(semantic)相关, 运算符(operator)相关, 小命长短相关
 - 注意const右值 当且仅当对于对象才有意义
 - const右值引用也存在, 可以绑定const/非const右值
->只是为了语法的完整性而存在, 无法触发真正的移动语义 => 因为无法进行steal operation
+>只是为了语法的完整性而存在, 无法触发真正的移动语义 => 因为无法进行steal operation => 进而没B用
 >如move constructor, move assignment, std::move()返回无意义啊
 >将只会触发copy assignment, 即 const T& 范式
 >
@@ -64,4 +64,75 @@ s2 = std::move(s1)              //2 string move assignment
 - `copy/move constructor`自动生成trival
 - 有`move constructor/assignment`声明时, `copy constructor/assignment`定义删除 => 原因是为了移动语义正确执行啊!
 
-#### 转发
+#### 转发或参数传递
+>解决的问题是, 函数模板将参数再次传递时
+>左值, 右值对象属性难以保证
+>const限定符难以保证
+>
+
+- 先再次理解右值引用
+   - 绑定右值后
+   - 对外是移后源一定会析构, 值不确定
+   - 对内, alias是**自由修改的左值**, 是左值, 事实正是如此
+- 同理const右值引用
+   - 不光无法实现对外的移后源保证
+   - 而且alias是const左值 => read-only, 事实真是如此
+   - 结果还是没B用
+- 对应的左值引用, const左值引用trival => 很自然 => 即左值, const左值
+
+```CPP
+template<typename F, typename T1, typename T2>
+void flip1(F f, T1 t1, T2 t2)
+{
+    f(t2, t1);
+}
+
+template<typename F, typename T1, typename T2>
+void flip2(F f, T1&& t1, T2&& t2)
+{
+    f(t2, t1);
+}
+
+template<typename F, typename T1, typename T2>
+void flip3(F f, T1&& t1, T2&& t2)
+{
+    f(std::forward<T1>(t2), std::forward<T2>(t1));
+}
+
+void f(int v1, int& v2);
+int i;
+flip1(f, i, 0);
+/*
+实例是 flip1(void(*)(int, int&), int, int);
+i永远不会变
+*/
+
+flip2(f, i, 0);
+/*
+实例是 flip2(void(*)(int, int&), int&, int&&);
+i会变, 显然, 而且会保持const左值/右值属性
+i的变化过程是(左值 => 绑定到左值引用 => alias左值 => f调用)
+但是0的变化过程是(右值 => 绑定到右值引用 => alias左值 => f调用)
+问题是: 无法一直保持右值引用的特性
+*/
+void g(int&& v1, int& v2);
+flip2(g, i, 0); // Error! 右值引用无法绑定左值lvalue
+
+flip3(g, i, 0); // so good!
+```
+
+- `std::forward<T>()`常用来转发右值引用, 且显示模板参数为函数模板模板参数T, 与右值引用函数模板模板参数推导`T&&`配合使用 => 完美转发
+
+#### 函数模板重载
+- 函数模板之间, 函数之间, 函数与函数模板之间构成重载关系的条件相同
+>即: 不看返回值, 只看参数类型, 个数, const, throw()声明符是否相同
+>注意: 函数模板之间的重载可以使用相同的模板前缀, 也可使用不同的模板前缀
+>使用相同的模板前缀时, 一般参数个数不同, 否则为函数模板特化(specialized)
+>
+
+- 重载决议原则
+   - 匹配的更好, 少执行转换(允许的转换中)
+   - 更特例, 如`const T&` 与 `T *`面对`string *`或`const string *`
+   - 多个候选中, 优先非模板版本
+   - 详见`C++ Primer::P619`
+

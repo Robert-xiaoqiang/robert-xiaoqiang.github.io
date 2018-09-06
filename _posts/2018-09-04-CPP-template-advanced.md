@@ -129,8 +129,10 @@ f2(0);  // T == int
 
 - 右值引用的函数模板参数的类型推导
 > 理想情况只能绑定右值, 但一类比, 也能绑定const右值 => 原因是T推导出const
-> const右值引用能绑定const/非const右值, 如下一篇详细讨论
+> const右值引用能绑定const/非const右值, 如下一篇blog详细讨论
 > 但如下的特例规则是极其美妙的
+
+- 类似的const右值引用函数模板模板参数的类型推导也存在, 只不过`T本身`不会推导出const, 其余同右值引用推导 => 基本没什么用, 如下一篇blog详细讨论
 
 ```CPP
 template <typename T> void f3(T&&);
@@ -158,7 +160,6 @@ f3(cfp);  // T == const float& => 折叠后的const左值引用绑定const左值
 > X&& &&                      => X&&
 > X 有无const无所谓
 > 
-
 
 - 注意引用的引用(引用折叠)无法直接的用声明语法写出, 但可用于
 - typedef/using alias声明
