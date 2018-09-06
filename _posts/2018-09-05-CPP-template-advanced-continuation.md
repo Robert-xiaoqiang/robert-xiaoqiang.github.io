@@ -17,6 +17,7 @@ tags: CPP template
 >将只会触发copy assignment, 即 const T& 范式
 >
 
+<!--more-->
 
 #### `std::move()`的左值实参与右值实参详解
 
@@ -50,5 +51,17 @@ s2 = std::move(s1)              //2 string move assignment
 - 显然当实参有const限定时, std::move()的const右值引用返回任何意义啊, 与之前讨论相同
 
 - `注意/结论: 放心使用std::move(非const l/r value)即可, 放心移动语义, 放心截断左值, 此处的特例自己少用啊! 当然实参const限定时DSB啊!`
+
+#### 拷贝控制成员的编译器自动生成(synthesized)简述
+- trival
+   - 构造/赋值操作是`memberwise`进行的, 包括(非静态)成员和直接/间接基类
+   - 不能`构造/赋值操作`的成员(刺头成员) 或 直接间接虚基类引发定义删除
+   - 程序员自定义`拷贝控制成员`引发删除, 但是可以**强制**
+   - 不能析构, 导致移动语义定义`move constructor/assignment`删除
+   - `=default`具有**显式**和**强制**双重意义
+- 没有任何构造时 => 生成无参构造, 定义是trival进行的, 否则声明为`=delete`
+- `copy/move assignment`自动生成trival, const成员引发删除, 智只能自定义
+- `copy/move constructor`自动生成trival
+- 有`move constructor/assignment`声明时, `copy constructor/assignment`定义删除 => 原因是为了移动语义正确执行啊!
 
 #### 转发
