@@ -7,7 +7,7 @@ tags: CPP template
 # CPP-template-advanced-continuation
 
 - T(args...) 构造 => 匿名对象是(非const)右值, 类似函数**对象返回** => 难以体现右值性(与对象相关的右值) 
-- 什么是右值 => exp, 函数返回, 匿名构造, 运算符相关
+- 什么是右值 => `exp(除了[], *解引用)`值, 函数返回值, 匿名构造, 运算符相关
 - 什么是左值 => 类型声明, 实例化对象
 - 右值/左值差别 => 语义(semantic)相关, 运算符(operator)相关, 小命长短相关
 - 注意const右值 当且仅当对于对象才有意义
@@ -133,8 +133,19 @@ flip3(g, i, 0); // so good!
 - 重载决议匹配原则
    - 匹配的更好, 少执行转换(允许的转换中)
    - 更特例, 如`const T&` 与 `T *`面对`string *`或`const string *`
+      - 面对前者, `T *`是更好的选择, 不需要const转换即可
+      - 面对后者, `T *`是更好的选择, 更特化, 与模板特化同义
    - 多个候选版本中, 优先非模板版本
    - 详见`C++ Primer::P619`
+
+```CPP
+// 二者为函数模板之间的重载, 都可以匹配所有类型
+// 但是
+// 左值, const左值, const右值
+template <typename T> void f(const T&); 
+// 右值
+template <typename T> void f(T&&);
+```
 
 #### (函数)模板参数变长 <=> 可变参数函数模板
 > 函数参数变长
@@ -144,10 +155,34 @@ flip3(g, i, 0); // so good!
 > 
 
 - 模板使用递归, 递归的base case终止条件是一个模板参数不变长的, 其余使用参数包`Sizeof(Args)`作为递归阶段
+- 模板前缀一般不同, 多个参数包啊, 参数一般不同, 多个参数包啊
+- 本质是函数模板之间的重载, 终止条件 => 匹配最好的版本, 更特化的版本
 - `注意: 递归终止条件一定声明在前`, 否则无限递归啊, 参数包为0 => GG
 
+```CPP
+template <typename T>
+ostream& print(ostream& out, const T& t)
+{
+    out << t;
+}
 
+// 在前缀和函数形参中的 ... 前后允许空白符
+template <typename T, typename... Args>
+ostream& print(ostream& out, const T& t, const Args&... rest)
+{
+    out << t << ", ";
+    return print(out, rest...);
+}
+```
 
+- 语法`...`的语义为`包扩展`, 语法格式为`参数包模式 ...`
+- 意义为: `Python/JS::map()`或`std::transform()`,  使用返回的线性表作为又一个参数包(即声明的rest又是一个参数包)
+- 如`类型参数包 -> 名字对象参数包`
+- 参数包模式可以很复杂
+   - 对与第一次扩展 => 是类型上的声明 => 可以CV限定, 引用
+   - 之后的扩展 => 是name/标识符/对象/变量 => 可以是任何表达式
+
+#### 成员对象/变量指针, 成员函数指针简述
 
 
 
