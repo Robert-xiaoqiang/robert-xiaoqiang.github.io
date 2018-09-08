@@ -60,8 +60,8 @@ s2 = std::move(s1)              //2 string move assignment
    - 不能析构, 导致移动语义定义`move constructor/assignment`删除
    - `=default`具有**显式**和**强制**双重意义
 - 没有任何构造时 => 生成无参构造, 定义是trival进行的, 否则声明为`=delete`
-- `copy/move assignment`自动生成trival, const成员引发删除, 智只能自定义
-- `copy/move constructor`自动生成trival
+- `copy/move assignment`自动生成trival, const成员引发删除, 只能自定义
+- `copy/move constructor`自动生成trival, `const`成员变量, 无类内初始值, 引发删除
 - 有`move constructor/assignment`声明时, `copy constructor/assignment`定义删除 => 原因是为了移动语义正确执行啊!
 
 #### 转发或参数传递
@@ -186,10 +186,40 @@ ostream& print(ostream& out, const T& t, const Args&... rest)
    - 
 
 #### 成员对象/变量指针, 成员函数指针简述
-- 成员对象指针
-   - 类型声明`const 成员类型(底层)className::* name/标识符`
-   - 初始化或指向成员`&className::成员对象`, 静态或非静态, `&`不可省略
-   - auto/decltype() 类型推导是正确姿势
+>成员是一种类型, 成员指针不同于普通指针
+>成员类型, 成员
+>
 
+- 成员对象指针
+   - 类型声明`const 成员类型(底层) className::*name/标识符;`
+   - 初始化或指向成员`&className::成员对象`, 静态或非静态, `&`不可省略, 要求`public`, 否则使用如下
+   - 或者使用`静态成员函数`返回成员指针 => 进行初始化或指向成员 => 正确的数据封装姿势
+   - 使用 => 成员对象指针, 只有`成员`和`指针`属性, 要确定实例即`object.*mp`或`pToObject->*mp`
+   - auto/decltype() 类型推导是常用姿势
+
+- 成员函数指针
+   - 类型声明`返回类型 (className::*name/标识符)(className::类型成员, ...)const;`
+   - 显然类型成员是`public`的
+   - 初始化或指向成员`&className::成员对象`, 静态或非静态, `&`不可省略, 要求`public`, 否则使用如下
+   - 或者使用`静态成员函数`返回成员指针 => 进行初始化或指向成员 => `非public`的成员函数用成员函数指针, 基本无用
+   - 使用`(object.*mp)(...)`或`(pToObject->*mp)(...)` => 注意优先级
+
+```CPP
+class Foo {
+public:
+	const long long ago = -1;
+	static long long Foo::*getpagop()
+	{
+        return &pago;
+	}
+private:
+	long long pago = 0;
+};
+// 以下成员对象指针使用方法等价
+auto mp0 = &Foo::ago;
+const long long Foo::*mp1 = &Foo::ago;
+Foo f, *pf = &f;
+cout << (f.*mp0 == pf->*mp1) << endl;
+```
 
 
