@@ -7,7 +7,7 @@ tags: CPP template
 # CPP-template-advanced-continuation
 
 - T(args...) 构造 => 匿名对象是(非const)右值, 类似函数**对象返回** => 难以体现右值性(与对象相关的右值) 
-- 什么是右值 => `exp(除了[], *解引用)`值, 函数返回值, 匿名构造, 运算符相关
+- 什么是右值 => 任何`exp(除了[], *解引用)`值(operator相关), 函数返回值, 匿名构造
 - 什么是左值 => 类型声明, 实例化对象
 - 右值/左值差别 => 语义(semantic)相关, 运算符(operator)相关, 小命长短相关
 - 注意const右值 当且仅当对于对象才有意义
@@ -183,7 +183,67 @@ ostream& print(ostream& out, const T& t, const Args&... rest)
    - 函数参数包 => 之后的扩展 => 是name/标识符/对象/变量 => 可以是任何表达式 
    - 对于模板参数包 => `typename ... Args`表示类型参数变长, `type ... Args`表示`类型type`的非类型参数变长 => 包括F/C模板
    - 参数包可以为空包(empty)
-   - 
+- 转发参数包
+   - 不过是参数包模式比较特殊
+
+#### 模板特化(specilized)
+> 永远等价于接管编译器的操作
+> 
+
+- 函数模板
+   - 特例化, 当然也够不成函数模板与不同函数之间的重载 => 等价于构成一个具体实例, 可以直接参与全局符号连接, 可以友元 => `inline使用`
+   > 不会影响重载匹配决议(更好, 更特化具体, 非模板)
+   > 特化声明要与原始F/C模板声明在同一命名空间, 一般使用同一文件
+   > 特化声明要完整, 要有实际实现代码, 否则找不到实例
+   > 禅 法门 公理 => 不过是接管编译器而已啊
+   > 
+
+   - 语法, 模板前缀为`template<>`告诉编译器我要特化, 可以有无花括号声明, 模板参数`定死一个实例`, 要符合原始函数模板的`模板参数T`声明, 而后在函数形参中体现
+   - 偏特化不允许
+
+```CPP
+template <typename T>
+int compare(const T& left, const T& right)
+{
+   return left - right;
+}
+
+template <>
+int compare(const char* const& left, const char* const& right);
+
+// for string literal
+// const char[size] ITC const char *
+template <>
+int compare(const char* const& left, const char* const& right)
+{
+   cout << "specilized version" << endl;
+   return strcmp(left, right);
+}
+
+int compare(const char (&left)[4], const char (&right)[4])
+{
+	cout << "non-template version" << endl;
+	return strcmp(left, right);
+}
+
+int main()
+{
+   cout << (compare("abc", "abb") > 0) << endl; // 1
+   return 0;
+}
+```
+
+- 类模板
+   - 特例化 => 等价于构成一个具体实例, 可以直接参与全局符号连接, 可以友元 => 有时`inline`使用
+      - 语法, 模板前缀`template<>`, 可以花括号内外声明分开, 模板参数`定死一个实例`, 要符合原始类模板的`模板参数T`声明
+      - `template <> struct<int, double> { };`
+   - 偏特化(部分参数定死实例, 或定死参数部分特性&, &&, 只能**类型参数**构成特化)
+      - 语法, 模板前缀不变, 在模板名字后指定特性`template <typename T> struct remove_reference<T&> { };`
+      - 语法, 模板前缀定死那部分不写, 模板名字后指定哪些实例`tempalte <typename T> struct psgt<T, int> { };`
+      - 特例化语法是极端情况 => ***本质是模板前缀不需要定死实例啊***
+      - 最终效果是, 模板前缀变短/不变短, 模板名字后`或增加特性或定死部分实例`(所有参数与原始模板的模板参数按位置对应)
+   - 仅仅成员特例化, 属于花括号外部声明
+      - 语法, 模板前缀`template<>`, 模板名字后定死实例`template <> struct<int, double>::psf(){ }`
 
 #### 成员对象/变量指针, 成员函数指针简述
 >成员是一种类型, 成员指针不同于普通指针
@@ -192,34 +252,76 @@ ostream& print(ostream& out, const T& t, const Args&... rest)
 
 - 成员对象指针
    - 类型声明`const 成员类型(底层) className::*name/标识符;`
-   - 初始化或指向成员`&className::成员对象`, 静态或非静态, `&`不可省略, 要求`public`, 否则使用如下
+   - 初始化或指向成员`&className::成员对象`, 一定非静态, `&`不可省略, 要求`public`, 否则使用如下
    - 或者使用`静态成员函数`返回成员指针 => 进行初始化或指向成员 => 正确的数据封装姿势
    - 使用 => 成员对象指针, 只有`成员`和`指针`属性, 要确定实例即`object.*mp`或`pToObject->*mp`
    - auto/decltype() 类型推导是常用姿势
+   - 静态成员对象本质是非成员啊, 注意
 
 - 成员函数指针
    - 类型声明`返回类型 (className::*name/标识符)(className::类型成员, ...)const;`
    - 显然类型成员是`public`的
-   - 初始化或指向成员`&className::成员对象`, 静态或非静态, `&`不可省略, 要求`public`, 否则使用如下
-   - 或者使用`静态成员函数`返回成员指针 => 进行初始化或指向成员 => `非public`的成员函数用成员函数指针, 基本无用
+   - 初始化或指向成员`&className::成员对象`, 一定非静态, `&`不可省略, 要求`public`, 否则`非public`使用如下
+   - 或者使用`静态成员函数`返回成员指针(此时要求不能直接`&name`,也要`&className::成员对象`, 因为`成员`) => 进行初始化或指向成员
+   - 如果此处使用`非静态成员函数`返回指针(`&className::成员对象`) => 也行
+   > 此时很奇怪的就是成员指针本质是实例无关的, 强行成员相关一下
+   > 使用2个实例如以下代码中的f, f2
+   > 无意义啊
+   > 
+
    - 使用`(object.*mp)(...)`或`(pToObject->*mp)(...)` => 注意优先级
+   - 静态成员函数本质是非成员啊, 注意
 
 ```CPP
 class Foo {
 public:
 	const long long ago = -1;
-	static long long Foo::*getpagop()
+	long long Foo::*getpagop()
 	{
-        return &pago;
+        return &Foo::pago;
+	}
+	Foo(int i):
+		pago(i)
+	{
+
 	}
 private:
-	long long pago = 0;
+	long long pago;
 };
-// 以下成员对象指针使用方法等价
-auto mp0 = &Foo::ago;
-const long long Foo::*mp1 = &Foo::ago;
-Foo f, *pf = &f;
-cout << (f.*mp0 == pf->*mp1) << endl;
+
+int main()
+{
+	// 以下成员对象指针使用方法等价
+	auto mp0 = &Foo::ago;
+	const long long Foo::*mp1 = &Foo::ago;
+	typedef const long long Foo::*MP1;
+	using MP2 = const long long Foo::*;
+	MP1 mp2 = &Foo::ago;
+	MP2 mp3 = &Foo::ago;
+
+	Foo f(0), *pf = &f;
+	cout << (f.*mp0 == pf->*mp1) << endl; // 1
+	cout << (f.*mp2 == pf->*mp3) << endl; // 1
+
+	auto mp4 = &Foo::getpagop;
+	long long Foo::*(Foo::*mp5)();
+	mp5 = &Foo::getpagop;
+	typedef long long Foo::*(Foo::*MP3)();
+	using MP4 = long long Foo::*(Foo::*)();
+	MP3 mp6 = &Foo::getpagop;
+	MP4 mp7 = &Foo::getpagop;
+
+	Foo f2(1);
+
+	cout << f2.*(f.*mp4)()  << endl;  // 1
+
+	return 0;
+}
 ```
 
+> 一点理解
+> 成员, 成员, 成员, 本质是实例无关的, 唯一的唯一的表达方式是className::name/成员对象className::name/成员函数, 可以在静态/非静态成员函数中使用, 仍然要满足PPP原则
+> 返回的本质是类的原型部分的内容, 属于实例无关 :: 完备性
+> 
 
+- 
