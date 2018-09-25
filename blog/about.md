@@ -27,3 +27,8 @@
 - A Fan of PAL => PALadin => (The) Legend of Sword and Fairy
 - A Pesudo-Fan of Basketball & Dota
 - Single Can Tease => 单身可撩
+
+# 真正的耻辱在于你只知道耻辱
+> 于2018-09-25玉泉教四-32舍
+> 百感交集
+> 
