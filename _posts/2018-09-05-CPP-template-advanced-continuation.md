@@ -235,15 +235,43 @@ int main()
 
 - 类模板
    - 特例化 => 等价于构成一个具体实例, 可以直接参与全局符号连接, 可以友元 => 有时`inline`使用
-      - 语法, 模板前缀`template<>`, 可以花括号内外声明分开, 模板参数`定死一个实例`, 要符合原始类模板的`模板参数T`声明
+      - 语法, 模板前缀`template<>`, 可以花括号内外声明分开, 模板参数`定死一个实例`, 要符合原始类模板的`模板参数T`声明(模板之后, 花括号之前)
       - `template <> struct<int, double> { };`
    - 偏特化(部分参数定死实例, 或定死参数部分特性&, &&, 只能**类型参数**构成特化)
       - 语法, 模板前缀不变, 在模板名字后指定特性`template <typename T> struct remove_reference<T&> { };`
       - 语法, 模板前缀定死那部分不写, 模板名字后指定哪些实例`tempalte <typename T> struct psgt<T, int> { };`
+      - 语法, 当然也可以将模板前缀变得更长(如使用模板进行其中一个参数的特化`std::tuple`), 但模板之后, 花括号之前同样要符合一一对应原始模板的模板参数声明
       - 特例化语法是极端情况 => ***本质是模板前缀不需要定死实例啊***
       - 最终效果是, 模板前缀变短/不变短, 模板名字后`或增加特性或定死部分实例`(所有参数与原始模板的模板参数按位置对应)
    - 仅仅成员特例化, 属于花括号外部声明
       - 语法, 模板前缀`template<>`, 模板名字后定死实例`template <> struct<int, double>::psf(){ }`
+   - 一种奇异的做法是, 通用版本只做模板声明, 通通使用特化版本, 充分利用编译期???
+   - 类模板的多个偏特化可能构成匹配时的**更好的匹配原则**
+
+- 更恰当理解, 无论特例化还是偏特化, 对模板前缀本质是没有限制的
+   - 如果使用的是非模板进行特化, 前缀的变化符合上述规律
+   - 如果再次使用模板进行其中一个参数的特化, 显然可以出现任何种类的模板前缀
+   - 最正确的理解是**不应该看模板前缀的变化, 而是要看模板名之后, 花括号之前的`<>`内的情况**(顺序对应, 声明符合原模板要求, 定死实例, 增加特性)
+
+```C++
+// std::tuple_element<size_t, std::tuple<>>::type 类模板的可能声明实现
+template< std::size_t I, class T >
+struct tuple_element;
+ 
+// recursive case
+template< std::size_t I, class Head, class... Tail >
+struct tuple_element<I, std::tuple<Head, Tail...>>
+    : std::tuple_element<I-1, std::tuple<Tail...>> { 
+
+};
+ 
+// base case
+template< class Head, class... Tail >
+struct tuple_element<0, std::tuple<Head, Tail...>> {
+   typedef Head type;
+};
+```
+
 
 #### 成员对象/变量指针, 成员函数指针简述
 >成员是一种类型, 成员指针不同于普通指针
