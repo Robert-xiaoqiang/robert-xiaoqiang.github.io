@@ -62,7 +62,12 @@ s2 = std::move(s1)              //2 string move assignment
 - 没有任何构造时 => 生成无参构造, 定义是trival进行的, 否则声明为`=delete`
 - `copy/move assignment`自动生成trival, const成员引发删除, 只能自定义
 - `copy/move constructor`自动生成trival, `const`成员变量, 无类内初始值, 引发删除
-- 有`move constructor/assignment`声明时, `copy constructor/assignment`定义删除 => 原因是为了移动语义正确执行啊!
+- 有`move constructor/assignment`声明时, `自动生成的copy constructor/assignment`定义删除 => 原因是为了移动语义正确执行啊!
+- 同理, 有`copy constructor/assignment`声明时, `自动生成的move constructor/assignment`定义删除 => 原因是为了拷贝语义正确执行啊!
+- 以上两点的本质是: `重载决议`, 自定义的优先于`synthesized`
+- 引发`自动生成的move constructor`定义为删除的条件为:
+   - 非静态成员/直接基类/链上的虚基类的`不能移动`和`删除或不可见的析构`
+   - 析构会阻止(prevent)`move constructor`的主动生成, 当时可以`=default`强制定义为缺省
 
 #### 转发或参数传递
 >解决的问题是, 函数模板将参数再次传递时
