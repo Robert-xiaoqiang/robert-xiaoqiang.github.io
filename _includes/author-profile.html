@@ -22,22 +22,21 @@
     {%- endif -%}
   {%- endif -%}
 
+    {%- if _author.name -%}
+    <meta itemprop="name" content="{{ _author.name }}">
+    <p class="author-profile__name">
+      {%- if _author.url -%}
+        <meta itemprop="url" content="{{ _author.url }}">
+        <a href="{{ _author.url }}">
+      {%- endif -%}
+          {{ _author.name }}
+      {%- if _author.url -%}
+        </a>
+      {%- endif -%}
+    </p>
+  {%- endif -%}
 
   <div class="right-col clearfix">
-
-    {%- if _author.name -%}
-      <meta itemprop="name" content="{{ _author.name }}">
-      <p class="author-profile__name">
-        {%- if _author.url -%}
-          <meta itemprop="url" content="{{ _author.url }}">
-          <a href="{{ _author.url }}">
-        {%- endif -%}
-            {{ _author.name }}
-        {%- if _author.url -%}
-          </a>
-        {%- endif -%}
-      </p>
-    {%- endif -%}
 
     {%- if _author.bio -%}
       <p itemprop="description">{{ _author.bio }}</p>

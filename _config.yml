@@ -17,7 +17,7 @@
 ## => Site Settings
 ##############################
 text_skin: orange # "default" (default), "dark", "forest", "ocean", "chocolate", "orange"
-highlight_theme: default # "default" (default), "tomorrow", "tomorrow-night", "tomorrow-night-eighties", "tomorrow-night-blue", "tomorrow-night-bright"
+highlight_theme: tomorrow-night # "default" (default), "tomorrow", "tomorrow-night", "tomorrow-night-eighties", "tomorrow-night-blue", "tomorrow-night-bright"
 url     : http://qindomitable.top/
 baseurl : # does not include hostname
 title   : QIndomitable
@@ -35,10 +35,10 @@ timezone: Asia/Shanghai # see https://en.wikipedia.org/wiki/List_of_tz_database_
 ##############################
 author:
   type      : # "person" (default), "organization"
-  name      : "Xiaoqiang Wang"
+  name      : "小强"
   url       : https://robert-xiaoqiang.github.io
   avatar    : /imgs/avatar.png
-  bio       : "A ZJU.CSer, A Dreamming Man, A Running Man"
+  bio       : "A ZJU.CSer"
   email     : robertxiaoqiang@gmail.com
   facebook  : xiaoqiang.wang.7927
   twitter   : # "user_name" the last part of your profile url, e.g. https://twitter.com/user_name
