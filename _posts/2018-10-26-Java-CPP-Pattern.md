@@ -23,6 +23,7 @@ tags: Java CPP Pattern RegExp
       - `.appendReplacement()` => before find()
       - `.appendTail()` => after find()
 
+<!--more-->
 
 ###  CPP
 - `std::regex` class 或 `std::wregex` class
