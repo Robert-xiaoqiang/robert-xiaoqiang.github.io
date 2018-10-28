@@ -14,6 +14,8 @@ tags: Java Generic
 - `bounded/unbounded T`
 - `bounded/unbounded WC`
 
+<!--more-->
+
 ### 关于泛型与继承, 能否引用的问题(类型声明的变量 + 创建的对象)
 - `B[] = new D[]{}` 正确, 带来了风险
 > 此处`{ }`可用于数组初始化, Java容器初始化, 其他情况`initializer_list<T>类模板`???
