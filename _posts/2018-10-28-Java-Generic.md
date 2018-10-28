@@ -29,7 +29,8 @@ tags: Java Generic
    - 或者 `GP<? extends B> = new GP<D>()`
    - 或者`GP<? extends D> = new GP<D>()`看似很怪,但正确, 原因如下
 
-### 关于WC(UWC, BWC)
+### 关于WC, UWC, BWC
+- 元素的`WC` <=> `Object类型`, 而`GP`应用之一是`容器元素` => trival
 - 无法进行插入, 即`add(), put(), set()`
 - 可以`remove(), get(), iterator<E>同理`
 - 是声明, 是deduce, 是infer => 不能用于定义或`new`
@@ -37,3 +38,9 @@ tags: Java Generic
 ### 关于泛型与非泛型
 - 非泛型 -> 泛型, 可能略去很复杂的过程, 也可能加`T`或`Object`
 - 泛型->非泛型, 或(非泛型基类), 爽!
+
+### 关于泛型数组
+- 泛型参数数组, 错误
+- 泛型参数为`T`(非`bounded WC`), 错误
+- 原因是, 数组向基类数组`cast后`, 可以实现[插入](#关于WC, UWC, BWC), 再次`向上cast`后, 是默认`T`, 还是默认`Object`的问题
+
