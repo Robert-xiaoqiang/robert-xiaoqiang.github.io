@@ -10,9 +10,11 @@ tags: Java Generic
 - 本质是引入`一个或多个T`
 
 ### 泛型方法
-- 本质是引入`T`或者`wild crads`
+- 本质是引入`T`或者`wild cards`
 - `bounded/unbounded T`
 - `bounded/unbounded WC`
+
+- **很显然, UWC, BWC的使用下, 仅能用于已有泛型类, 泛型接口的泛型参数, 不同独立的像T一样自由使用, 甚至是`add(), put(), set()等创建/修改对象`有关的操作无法进行. 容器元素句柄要用Object**
 
 <!--more-->
 
