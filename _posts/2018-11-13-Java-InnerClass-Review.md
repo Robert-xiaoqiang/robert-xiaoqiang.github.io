@@ -6,7 +6,7 @@ tags: Java InnerClass
 
 # Java-InnerClass-Review
 
-#### 局部(作用域)内部类, 可以final, abstract, 不能PPP, 不能static
+### 局部(作用域)内部类, 可以final, abstract, 不能PPP, 不能static
 > final属性的初始化, **不可以**使用成员普适初始化
 > 
 
@@ -27,7 +27,7 @@ tags: Java InnerClass
 
 <!--more-->
 
-#### 匿名内部类
+### 匿名内部类
 > 特点无构造函数, 实现接口, 继承基类
 > 方法的访问权限设置public @Override
 > 其他访问权限设置, 极其容易成为SB, SB, SB
@@ -42,7 +42,7 @@ tags: Java InnerClass
 - 内部类本身
    - 同局部内部类
 
-#### 类内部类, 非static, 可以PPP, 可以final
+### 类内部类, 非static, 可以PPP, 可以final
 > 特点在于内部类对象一定关联一个外部类对象
 > 类外类型表示 O.I
 > 对象构造 O.I i = O.new O.I()
@@ -70,7 +70,7 @@ tags: Java InnerClass
    - 可以继续类内部类
 
 
-#### 类内部类, static, 可以PPP, 可以final
+### 类内部类, static, 可以PPP, 可以final
 > 特点在于内部类对象与外部类对象无关
 > 类外类型表示 O.I
 > 对象构造 O.I i = new O.I()
@@ -98,7 +98,7 @@ tags: Java InnerClass
 
 
 
-#### 内部类继承杂项
+### 内部类继承杂项
 - CPP override 3item
 - Java @Override 3item
 
