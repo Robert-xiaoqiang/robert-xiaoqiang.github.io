@@ -110,3 +110,7 @@ tags: Java InnerClass
 - 非静态内部类暴露除去用于继承`class Foo extends O.I{ }`, 构造函数第一参为外部类对象, 第一句为`oo.super()` => `无法委托, 无法super()` => `这无疑是傻逼之举`
 
 - 对比静态内部类 => 无任何区别 => `top level == static context`
+
+- 接口内部可以有接口, 可以有static内部类, 可以枚举(极其有用), 也可以有非静态内部类 => 四者都隐式public, 可选final/abstract
+
+
