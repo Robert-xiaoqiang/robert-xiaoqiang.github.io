@@ -115,6 +115,6 @@ tags: Java InnerClass
 
 - 对比静态内部类 => 无任何区别 => `top level == static context`
 
-- 接口内部可以有接口, 可以有static内部类, 可以枚举(极其有用), 也可以有非静态内部类 => 四者都隐式public, 可选final/abstract
+- 接口内部可以有接口, 可以有static内部类, 可以枚举(极其有用), 也可以有非静态内部类,  可以类方法, 类属性 =>前四者都隐式public, 可选final/abstract
 
 
