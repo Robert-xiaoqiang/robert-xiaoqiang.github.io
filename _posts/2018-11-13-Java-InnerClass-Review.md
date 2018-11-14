@@ -8,6 +8,8 @@ tags: Java InnerClass
 
 ### 局部(作用域)内部类, 可以final, abstract, 不能PPP, 不能static
 > final属性的初始化, **不可以**使用成员普适初始化
+> 当内部类, 外部类之间属性/方法冲突时 => `O.this.* VS. *`
+> 当内部类, 外部类 类属性冲突 => `O.* trival`
 > 
 
 - 局部作用域对局部内部类
@@ -31,7 +33,9 @@ tags: Java InnerClass
 > 特点无构造函数, 实现接口, 继承基类
 > 方法的访问权限设置public @Override
 > 其他访问权限设置, 极其容易成为SB, SB, SB
-> 
+> 当内部类, 外部类之间属性/方法冲突时 => `O.this.* VS. *`
+> 当内部类, 外部类 类属性冲突 => `O.* trival`
+>
 
 - 外对内
    - 同局部内部类
