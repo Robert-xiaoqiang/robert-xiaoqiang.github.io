@@ -15,9 +15,9 @@ tags: OpenCV CV
    - **dx, dy**, 光屏平面的量子化, 离散化的单位, 即像素的物理尺寸(`nx * dx == screen width`)
    - **u0, v0**, 光轴与光屏的交点的像素/图像坐标(按照习惯, 图像坐标取左下为原点), 模型中, 认为u0, v0在图像坐标矩形中心
    - `(x, y, z) => {(u, v)}` 世界坐标映射像素坐标, 默认取z轴为主轴, 即投影方向的世界坐标为z轴(与图形学规定的方向正负相反)
-   - ![a1](resource/a1.PNG)
+   - ![a1]({{site.url}}/assets/BlogImages/2018-11-14/a1.PNG)
    - `Y / y = X / x = Z / f` 且`u = u0 + x / dx, v = v0 +y / dy`
-   - ![a2](resource/a2.PNG)
+   - ![a2]({{site.url}}/assets/BlogImages/2018-11-14/a2.PNG)
    - 由此得到内参矩阵
 
 - 畸变系数
@@ -46,7 +46,7 @@ tags: OpenCV CV
 
    - 旋转变换
      - 旋转矩阵R, 旋转向量(rx, ry, rz), 法向θ
-     - ![a3](resource/a3.PNG)
+     - ![a3]({{site.url}}/assets/BlogImages/2018-11-14/a3.PNG)
 
    - 平移变换
      - 平移向量(tx, ty, tz)
