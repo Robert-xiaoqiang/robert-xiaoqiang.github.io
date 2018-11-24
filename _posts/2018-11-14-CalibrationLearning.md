@@ -19,6 +19,7 @@ tags: OpenCV CV
    - `Y / y = X / x = Z / f` 且`u = u0 + x / dx, v = v0 +y / dy`
    - ![a2]({{site.url}}/assets/BlogImages/2018-11-14/a2.PNG)
    - 由此得到内参矩阵
+<!--more-->
 
 - 畸变系数
 
