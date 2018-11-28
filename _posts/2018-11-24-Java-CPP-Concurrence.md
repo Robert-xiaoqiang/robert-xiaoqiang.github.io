@@ -48,7 +48,17 @@ x.resume(t);   // 唤醒挂起的t, by variable
 - `t.isInterrupted()`tg.isDaemon(), interrupt(), t.interrupt()
 
 #### Executor/thread pool 机制
-
+- `工厂Executors.new{Fixed, Cached}ThreadPool(1/INF Number) 子接口ExecutorService`
+- `shutdown(Now), isShutdown(不可execute), isTerminated`
+- why 类方法???
+#### 同步
+- shared前提 => 属性/变量
+- `synchronized section/method(this)`
+- `new ReentrantLock().newCondition()`
+   - `await/signalAll/lock/unlock`
+- `wait/notify`
+- `new Semaphore() P() V() => acquire/release`
+- `***BlockingQueue() for Consumer/Producer()`
 
 #### JVM 与 Thread 与 杂项
 - 根为系统线程组, 线程组才有父子, 单根概念, 资源过继概念, 儿子过继概念
