@@ -25,7 +25,7 @@ tags: Java InnerClass
    - 类方法, 禁止(只能在top-level 或 static-level)
    - 静态初始化块, 禁止
    - 内部interface / enum, 禁止(只能在top-level 或 static-level)
-   - 可以继续类内部类
+   - 可以继续类内部类只能final/abstract, 不能static
 
 <!--more-->
 
@@ -71,7 +71,7 @@ tags: Java InnerClass
    - 类方法, 禁止(只能在top-level 或 static-level)
    - 静态初始化块, 禁止
    - 内部interface / enum, 禁止(只能在top-level 或 static-level)
-   - 可以继续类内部类
+   - 可以继续类内部类只能final/abstract, 不能static
 
 
 ### 类内部类, static, 可以PPP, 可以final
@@ -98,7 +98,7 @@ tags: Java InnerClass
    - 类方法,  无限制
    - 静态初始化块, 允许
    - 内部interface / enum, 允许, 且修饰PPP
-   - 可以继续**类内部类**
+   - 可以继续**类内部类**- 可以继续类内部类只能final/abstract, **也能static**
 
 
 
@@ -113,8 +113,12 @@ tags: Java InnerClass
    - so far, so good
 - 非静态内部类暴露除去用于继承`class Foo extends O.I{ }`, 构造函数第一参为外部类对象, 第一句为`oo.super()` => `无法委托, 无法super()` => `这无疑是傻逼之举`
 
-- 对比静态内部类 => 无任何区别 => `top level == static context`
-
+- 对比静态内部类 => 无任何区别 => `top level == static context(成员限定)`
+   - 类方法, 无限制类属性
+   - static初始化块
+   - 内部接口, 内部枚举
+   - static类内部类
+   - 可能有更优雅的概括, 可我没发现
 - 接口内部可以有接口, 可以有static内部类, 可以枚举(极其有用), 也可以有非静态内部类,  可以类方法, 类属性 =>前四者都隐式public, 可选final/abstract
 
 
