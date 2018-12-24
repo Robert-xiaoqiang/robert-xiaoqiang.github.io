@@ -120,5 +120,5 @@ tags: Java InnerClass
    - static类内部类
    - 可能有更优雅的概括, 可我没发现
 - 接口内部可以有接口, 可以有static内部类, 可以枚举(极其有用), 也可以有非静态内部类,  可以类方法, 类属性 =>前四者都隐式public, 可选final/abstract
-
+- 接口的top level可以public, friend, 成员只能public
 
