@@ -6,7 +6,7 @@ tags: Java InnerClass
 
 # Java-InnerClass-Review
 
-### 局部(作用域)内部类, 可以final, abstract, 不能PPP, 不能static
+### 局部(作用域)内部类, 可以final, abstract, 不能PPP, 不能static, 这点同局部变量
 > final属性的初始化, **不可以**使用成员普适初始化
 > 当内部类, 外部类之间属性/方法冲突时 => `O.this.* VS. *`
 > 当内部类, 外部类 类属性冲突 => `O.* trival`
@@ -29,7 +29,7 @@ tags: Java InnerClass
 
 <!--more-->
 
-### 匿名内部类
+### 匿名内部类, 当然同上, 同局部内部类, 无静态/非静态之分
 > 特点无构造函数, 实现接口, 继承基类
 > 方法的访问权限设置public @Override
 > 其他访问权限设置, 极其容易成为SB, SB, SB
