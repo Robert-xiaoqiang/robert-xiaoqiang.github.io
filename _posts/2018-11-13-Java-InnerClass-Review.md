@@ -104,21 +104,20 @@ tags: Java InnerClass
 
 ### 内部类继承杂项
 - CPP override 3item
-- Java @Override 3item
-
+- Java @Override 2item, 为什么Java的Annotation是大写的, 为什么, 为什么, 为什么, 太丑陋了, 太丑陋了, 太丑陋了
 - 内部类覆盖是不存在的
    - 可能分别外部与外部之间, 内部与内部之间覆盖
-
 - 非静态内部类之间在内部类之间继承
    - so far, so good
 - 非静态内部类暴露除去用于继承`class Foo extends O.I{ }`, 构造函数第一参为外部类对象, 第一句为`oo.super()` => `无法委托, 无法super()` => `这无疑是傻逼之举`
-
-- 对比静态内部类 => 无任何区别 => `top level == static context(成员限定)`
+- 对比静态内部类 => 无任何区别 => `top level == static context(成员限定符)`
    - 类方法, 无限制类属性
    - static初始化块
    - 内部接口, 内部枚举
-   - static类内部类
+   - static(类)内部类
    - 可能有更优雅的概括, 可我没发现
-- 接口内部可以有接口, 可以有static内部类, 可以枚举(极其有用), 也可以有非静态内部类,  可以类方法, 类属性 =>前四者都隐式public, 可选final/abstract
-- 接口的top level可以public, friend, 成员只能public
+- 接口内部可以有接口, 可以枚举(极其有用), 可以有static内部类, 也可以有非静态内部类,  可以类方法且必须给定义, 类属性, default 方法(不可static) =>大都隐式public, 可选final/abstract
+   - **public abstract, public final static** 足矣, 特例在于接口的类方法可以PPP
+- 接口不可以静态初始化块, 初始化块, why???
+- **接口位于top level只能public, friend(trival), 接口内的成员只能public, 接口作为成员PPP完全可以, 注意: 当与上述不冲突时**
 
