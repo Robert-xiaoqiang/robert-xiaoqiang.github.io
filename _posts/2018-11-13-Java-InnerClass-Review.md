@@ -116,8 +116,9 @@ tags: Java InnerClass
    - 内部接口, 内部枚举
    - static(类)内部类
    - 可能有更优雅的概括, 可我没发现
-- 接口内部可以有接口, 可以枚举(极其有用), 可以有static内部类, 也可以有非静态内部类,  可以类方法且必须给定义, 类属性, default 方法(不可static) =>大都隐式public, 可选final/abstract
-   - **public abstract, public final static** 足矣, 特例在于接口的类方法可以PPP
+- 接口内部可以有接口, 可以枚举(极其有用), 可以有static内部类, 也可以有非静态内部类,  可以类方法且必须给定义, 类属性, default 方法(不可static) =>大都隐式public, 可选final/abstract, strictfp
+   - **public abstract, public final static** 足矣, 特例在于接口的**类方法**可以private, 不能protected
+   - Java只有public继承
 - 接口不可以静态初始化块, 初始化块, why???
 - **接口位于top level只能public, friend(trival), 接口内的成员只能public, 接口作为成员PPP完全可以, 注意: 当与上述不冲突时**
 
