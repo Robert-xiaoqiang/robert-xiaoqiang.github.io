@@ -5,7 +5,7 @@ tags: Java CPP Threads
 ---
 
 
-# Java-CPP-Concurrence
+# Java-CPP-Concurrency
 > 这里只讨论线程机制
 > 即线程原语, 线程通信, 线程同步互斥
 > 
@@ -108,7 +108,7 @@ explicit thread(F&& f, T&&... args);
       - `.valid()`非阻塞, 推荐实时检查
       - `.wait(timeout)`部分阻塞
       - `.get()`阻塞
-   - 第一级`std:promise<T> 共享状态类型T`, `p.get_future()返回句柄`, 同时将此`promise<RET>`作为参数, 此时task无返回值`void task()`,  显然 =>线程构造函数多一个参数, task内部使用, `p.set_value/exception_at_thread_exit(value)`, 外部使用`future.get()`获取即可.
+   - 第一级`std:promise<RET> 共享状态类型T`, `p.get_future()返回句柄`, 同时将此`promise<RET>`作为参数, 此时task无返回值`void task()`,  显然 =>线程构造函数多一个参数, task内部使用, `p.set_value/exception_at_thread_exit(value)`, 外部使用`future.get()`获取即可.
     > promise.set_exception(std::current_exception());
     > std::exception_ptr eptr = std::current_exception()
     > std::rethrow_exception(eptr);
@@ -117,23 +117,29 @@ explicit thread(F&& f, T&&... args);
 
    - 第二级`std::packaged_task<std::function>`, `pt.get_future()返回句柄`, 此时使用的task的函数有返回值`RET task()`, 内部正常返回, 外部使用`future.get()`获取即可
    - 第三级`std::future<std::result_of_t/std::invoke_result_t<std::decay_t<F>, Args...>> std::async(std::launch::async/deferred, F&&, Args&&... args)`简单的说, 将policy, 线程构造参数传入, 返回future句柄, 可获得异步I/O返回类型
+
+
 #### 线程互斥同步
 - 互斥体/互斥量/互斥锁std::mutex, 本身暴露为共享, 没毛病, 加锁临界区上下文
    - `.try_lock() => bool, 非阻塞`
    - `.lock()`
    - `.unlock()`
-   - `std::lock_guard<M>(M m, std::adopt_lock)互斥量封装` RAII风格的局部作用域的临界区管理, 无tag时阻塞
-   - `std::unique_lock<M>(M m, std::defer_lock不请求/try_to_lock/adopt_lock)互斥量封装` RAII风格的局部作用域的临界区管理, 更灵活, 构造式可选加锁, 可手动加锁, 释放, 无tag时阻塞`lock/unlock/owns_lock bool()`
+   - `std::lock_guard<std::Mutex>(M m, std::adopt_lock)互斥量封装` RAII风格的局部作用域的临界区管理, 无tag时阻塞
+   - `std::unique_lock<std::Mutex>(M m, std::defer_lock不请求/try_to_lock/adopt_lock)互斥量封装` RAII风格的局部作用域的临界区管理, 更灵活, 构造式可选加锁, 可手动加锁, 释放, 无tag时阻塞`lock/unlock/owns_lock bool()`
    - `std::lock(), std::try_lock()`类似AND信号量, 避免死锁
 - `std::timed_mutex`
    - `.try_lock_for( std::chrono::milliseconds d)`
    - `.try_lock_until(std::chrono::steady_clock::now() + d)`
 - `recursive_*`
-   - 类似嵌套synchronized section => trival
+   - 类似嵌套synchronized section => trival可重入
 
-- `std::conditional_variable`, 必须配合`std::unique_lock<M>`使用, 默认tag即可, 注意手动解锁, 后发通知, 或退出作用域发通知
-   - wait(lock, P = true);
+- `std::condition_variable`, 必须配合`std::unique_lock<M>`使用, 默认tag即可, 注意手动解锁, 后发通知, 或退出作用域发通知
+   - wait(lock, P = true); true就不用wait, while等待()逻辑比if()等待逻辑更安全
    - notify_on()/notify_all();
+- `std::condition_variable`, 可配合`std::lock_gard<M>`
 
 - 原子操作
+   - `std::atomic<T> value`全局, 成员变量, 成员对象
+   - 避免`Mutex, lock_gard`的使用
+
 - 内存序, 指令序
