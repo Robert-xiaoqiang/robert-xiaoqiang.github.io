@@ -1,34 +1,22 @@
 
-- **Hi, I'm Xiaoqiang Wang. I'm crazy about technology and sticking to learning!**
+- **我是王晓强, 开发之路漫漫, 知识可畏**
+- `人生一场虚空大梦, 韶华白首, 不过转瞬`
+- `唯有天道恒在, 循环往复, 不曾更改`
 
 | When | Where | What|
 |:----------|:---------:|:---------:|
 |2016 - Now| ZJU | Undergraduate Computer Science|
 |To be continued|...|...|
 
-### Skill
+#### About me
+- ~~略懂中文, 略懂模板, 不太懂React.JS~~
+- 熟练划水
+- 写好代码
 
-- Master: Chinese
-- Naive: C/C++, JS, HTML, CSS(SA/CSS)
-- Amateur: Python, Java, Bash
-
-### Framwork & Tool
-- MySQL
-- Django
-- Qt5
-- OpenGL4.X
-- Bootstrap3/4
-
-### Self Logion
-- 天道酬勤、地道酬善、人道酬诚、商道酬信、业道酬精、学道酬苦、艺道酬心.
-- 夫苟其挫而不退矣，则小逆之后，必有小顺; 大逆之后，必有大顺.
-
-### Others
-- A Fan of PAL => PALadin => (The) Legend of Sword and Fairy
-- A Pesudo-Fan of Basketball & Dota
-- Single Can Tease => 单身可撩
-
-# 真正的耻辱在于你只知道耻辱
-> 于2018-09-25玉泉教四-32舍
-> 百感交集
+#### Issues
+- `意气凌霄不知愁, 愿上玉京十二楼`
+- `挥剑破云迎星落, 举酒高歌饮凤游`
+- `千载太虚无非梦, 一段衷情不肯休`
+- `梦醒人间看微雨, 江山还似旧温柔`
+> (c) PAL4 完结诗句
 > 
