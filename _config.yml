@@ -18,10 +18,10 @@
 ##############################
 text_skin: orange # "default" (default), "dark", "forest", "ocean", "chocolate", "orange"
 highlight_theme: tomorrow-night # "default" (default), "tomorrow", "tomorrow-night", "tomorrow-night-eighties", "tomorrow-night-blue", "tomorrow-night-bright"
-url     : http://qindomitable.top/
+url     : http://blog.qindomitable.top/
 baseurl : # does not include hostname
 title   : QIndomitable
-description: > # this means to ignore newlines until "Language & timezone"
+description: # this means to ignore newlines until "Language & timezone"
   Awesome Man with Awesome Stories in Awesome Website
 
 
@@ -36,7 +36,7 @@ timezone: Asia/Shanghai # see https://en.wikipedia.org/wiki/List_of_tz_database_
 author:
   type      : # "person" (default), "organization"
   name      : "小强"
-  url       : https://robert-xiaoqiang.github.io
+  url       : http://blog.qindomitable.top/
   avatar    : /imgs/avatar.png
   bio       : "Another Young Man"
   email     : robertxiaoqiang@gmail.com
@@ -59,7 +59,7 @@ repository_tree: master
 ## => Paths
 ##############################
 paths:
-  root    : / # title link url, "/" (default)
+  root    : /blog # title link url, "/" (default)
   home    : /blog # home layout url, "/" (default)
   archive : /blog/archive.html # "/archive.html" (default)
   rss     : /feed.xml # "/feed.xml" (default)
