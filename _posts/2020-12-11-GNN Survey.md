@@ -4,6 +4,8 @@ key: 202012110
 tags: GNN, Survey
 ---
 
+[TOC]
+
 # GNN Survey
 
 ## Overview
@@ -55,6 +57,8 @@ Note **spatial domain** is also known as **vertex domain** , **graph domain** or
 | $\phi$ | $\phi = [ \mu_1, \cdots, \mu_n]$  Graph Fourier Inverse Transformation Operator |
 
 ## Global View
+
+### Laplacian Eigen Map and Total Variation
 
 Let's begin the extraordinary adventure with global view embedding. Please keep it in your mind that global view is globality of original data (**spatial domain**), which means **spectral domain** is not dependent or orthogonal to **spatial domain**, but different views of the same data.
 
@@ -152,15 +156,81 @@ It is apparent
 
   Now we have drawn a clear conclusion that $TV(X)$ is the squared sum of signal residuals between every node and its neighbors in **spatial domain** and is the squared sum of eigen-value-weighted eigen function/signal (coordinate representations or embeddings) in **spectral domain**.
 
-Based on aforementioned analysis and given a topology structure of a graph, we can optimize the graph signals by $argmin \;TV(X)$ easily. Obviously, $TV(X)$ has the smallest value $0$ when vertex signal has the same direction with the eigen vector associated the least eigen value $\lambda_1 = 0$. More importantly, we have obtained this kind of eigen vectors by trivial solutions. In a word, $TV(X)$ has the smallest value $0$ if the vertex signal is a fixed constant for all vertices of the whole graph or all vertices of current connected component. It is also intuitive to make this conclusion from definition of Laplacian Operator (**difference or variation**). On the contrary, $argmax \;TV(X)$ is a difficult optimization.
+Based on aforementioned analysis and given a topology structure of a graph, we can optimize the graph signals by $argmin \;TV(X)$ easily. Obviously, $TV(X)$ has the smallest value $0$ when vertex signal has the same direction with the eigen vector associated the least eigen value $\lambda_1 = 0$. More importantly, we have obtained this kind of eigen vectors by trivial solutions. In a word, $TV(X)$ has the smallest value $0$ if the vertex signal is made up of a fixed constant for all vertices of the whole graph or all vertices of current connected component. It is also intuitive to make this conclusion from definition of Laplacian Operator (**difference or variation**). On the contrary, $argmax \;TV(X)$ is a difficult optimization.
 
-In addition, we can also observe the relations between **variation** and **spectral domain**. i.e., different eigen values have different contributions to the **variation/difference**. Specifically speaking, large eigen values contribute more than small eigen values. Therefore, if the embedding specific to the eigen vectors associated to large eigen values is **large**,  the graph signal tends to be **unsmooth, jittering and high-variance**. **On the contrary**, the graph signal is **smooth, mean and identical**. Please keep this observation in mind, I will formulate Graph Convolutional Networks from it.
+In addition, we can also observe the relations between **variation** and **spectral domain**. i.e., different eigen values have different contributions to the **variation/difference**. Specifically speaking, large eigen values contribute more than small eigen values. Therefore, if the embedding specific to the eigen vectors associated to large eigen values is **large**,  the graph signal tends to be **unsmooth, jittering and high-variance**. **On the contrary**, the graph signal is **smooth, mean and uniformly identical**. Please keep this observation in mind, I will formulate Graph Convolutional Networks from it.
 
-So far, I have summarized the properties of $L$, different views and optimization of $TV(X)$ and obtained a intuitive but amazingly powerful inference that smoothness of graph signals is strongly related (or equivalent to) magnitude of embeddings of different eigen vectors.
-
-
+So far, I have summarized the properties of $L$, different views and optimization of $TV(X)$ and obtained a intuitive but amazingly powerful inference that smoothness of graph signals is strongly related (or equivalent to) magnitude of embeddings of different eigen vectors. There is no doubt that optimization of $TV(X)$ is meaningless in the practical scenario, because It reassigns graph signals and ignores the original graph signals completely. Naturally, we need a kind of operation that **changes the smoothness of a given graph (i.e., low-pass, high-pass or band-pass)**, which is also known as **filtering** in digital signal processing (DSP) field.
 
 
+
+### Graph Filtering
+
+In concept , **graph filtering** is a 2-step procedure that consists of **graph-spectrum transformation (graph Fourier transformation) and modified reconstruction respectively**. In equation, it is represented as following:
+
+- obtain embeddings using graph-spectrum transformation (map **from spatial to spectral**): 
+
+  
+  $$
+  Y = \phi^TX = \left[\begin{matrix}
+  y_1 \\
+  y_2 \\
+  \vdots \\
+  y_n
+  \end{matrix}\right]
+  $$
+  
+
+- modify embeddings explicitly to smooth the graph signal: 
+
+  
+  $$
+  \begin{align}
+  \hat{Y} = h(\Lambda)Y = \left[\begin{matrix}
+  h(\lambda_1) & 0 & \cdots & 0 \\
+  0 & h(\lambda_2) & \cdots & 0 \\
+  \vdots & \vdots & \ddots & \vdots \\
+  0 & 0 & \cdots & h(\lambda_n)
+  \end{matrix}\right] \left[\begin{matrix}
+  y_1 \\
+  y_2 \\
+  \vdots \\
+  y_n
+  \end{matrix}\right] = \left[\begin{matrix}
+  h(\lambda_1)y_1 \\
+  h(\lambda_2)y_2 \\
+  \vdots \\
+  h(\lambda_n)y_n
+  \end{matrix}\right]
+  \end{align}
+  $$
+
+- 
+
+- reconstruct the spatial graph signal (vertex function/signal) using modified embeddings (map **from spectral to spatial**):
+
+  
+  $$
+  \hat{X} = \phi \hat{Y} = h(\lambda_1)y_1 \mu_1 + h(\lambda_2)y_2 \mu2 + \cdots + h(\lambda_n)y_n \mu_n
+  $$
+
+Aforementioned procedure is intuitive because smoothness is equivalent to embeddings of eigen vectors corresponding to large or small eigen values. Changing embeddings is just to adapt smoothness of graph signals. We can also regard this in a different view:
+
+
+$$
+\begin{align}
+\hat{X} &= H X \\
+& where \; H = \phi h(\Lambda) \phi^T
+\end{align}
+$$
+In convolution theory, we conventionally call $H$ **filter matrix** and $h(\Lambda), h$ represent **response matrix** and **response function** respectively.
+
+It is obvious 
+
+- that graph filtering is just a linear transformation with filter matrix $H$
+- that different filter matrix $H$ will generate different transformed graph signals, such as
+  - if $h$ is an identical mapping, $H = L$, $\hat{X} = LX$ is smoother than $X$ naturally (due to residuals). Furthermore, $L^kX$ will smoother than $L^{k-1}X$ (due to residuals of residuals), note $L^0X = X$. This kind of filter matrices is names **Chebyshev Base Filter Matrix** and I will discuss it later.
+  - if  $h$ is a zero mapping, $H = I_n$, $\hat{X} = X$ do nothing meaningful.
 
 ## Local View
 
