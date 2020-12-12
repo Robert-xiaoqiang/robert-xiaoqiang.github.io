@@ -14,7 +14,7 @@ tags: GNN, Survey
 
 Note **spatial domain** is also known as **vertex domain** , **graph domain** or **data space domain**. In the contrast, **Spectral domain** is also denoted as **feature space domain**.
 
-d
+
 
 <!--more-->
 
@@ -61,6 +61,8 @@ Let's begin the extraordinary adventure with global view embedding. Please keep 
 Given a undirected graph $G$, we firstly obtain Laplacian Eigen Map $L = D - A$, where $D$ is degree diagonal matrix. Specifically, $D = \{d_{ij}\}$ and $d_{ii} = \sum_{k = 1}^{n}A_{ik} = \sum_{k=1}^{n}A_{ki}$, $d_{ij} = 0$ when $i \ne j$, $A$ is adjacency matrix with $A_{ii} = 0$. Although there are modified Laplacian Eigen Map (such as normalized Laplacian, random walk Laplacian), we simply use the vanilla version.
 
 Decomposing $L$ and we can obtain eigen vectors $\mu_i$ and associated eigen values $\lambda_i$, suppose that $\lambda_1 < \lambda_2 < \cdots < \lambda_n$:
+
+
 $$
 \phi^{-1}L\phi = \Lambda \\
 where \, \phi = [ \mu_1, \cdots, \mu_n], \, \Lambda = 
@@ -72,7 +74,11 @@ where \, \phi = [ \mu_1, \cdots, \mu_n], \, \Lambda =
 \end{matrix}\right] \\
 and \, \phi^{-1} = \phi^T, orthogomal \, matrix
 $$
+
+
 Now, let's find some interesting properties of $L$. we simply suppose that the dimension of node feature is 1. Note when it is more than 1, we can conduct the following procedure  in a **predictor-wise**  manner to get the same perspective, thus $X = \left[\begin{matrix} x_1 & x_2 & \cdots & x_n\end{matrix}\right]^T \in R^n$ and $x_i$ is a scalar feature of node $i$. In addition, we suppose the graph is constructed from hard kernel (limitation of soft kernel graph) , thus $A \in \{ 0, 1\}^{n \times n}$.
+
+
 $$
 \begin{align}
 LX &= (D-A)X \\
@@ -99,6 +105,7 @@ x_{nj} + x_{nj}  + \cdots\\
 $$
 
 
+
 It is obvious
 
 - that **Laplacian Operator (Laplacian Eigen Map)** represents the **difference (or variation)** between every node and its neighbors.
@@ -106,6 +113,8 @@ It is obvious
 - that **spectral clustering** is a method for clustering ( dimensionality reduction and clustering), which just partitions the low-frequency base signals (regarding eigen vectors corresponding to **the second least** eigen value as reduced results).
 
 Let's take one more step in a $n$-element **quadratic form** or **standard form**:
+
+
 $$
 \begin{align}
     X^TLX &= \left[\begin{matrix}
@@ -119,6 +128,8 @@ $$
     &= \sum_{e_{ij} \in E}{(x_i - x_j)^2}
 \end{align}
 $$
+
+
 It is apparent
 
 - that $L$ is a semi-positive definite matrix, and least eigen value $\lambda_1 = 0$ and I have proofed its trivial solutions ahead of time.
@@ -128,6 +139,8 @@ It is apparent
 - Let's take one more step, supposing that $Y = \phi^TX = \left[\begin{matrix}
   y_1 & y_2 & \cdots & y_n
   \end{matrix}\right]^T$ is the embedding of **vertex signal/function** with the eigen vectors as the bases. $Y$ is also known as **eigen signal/function**.
+
+  
   $$
   \begin{align}
   TV(X) &= X^TLX = X^T\phi \Lambda \phi^T X \\
@@ -135,6 +148,8 @@ It is apparent
   &= \sum_{i = 1}^{n}{\lambda_iy_i^2}
   \end{align}
   $$
+  
+
   Now we have drawn a clear conclusion that $TV(X)$ is the squared sum of signal residuals between every node and its neighbors in **spatial domain** and is the squared sum of eigen-value-weighted eigen function/signal (coordinate representations or embeddings) in **spectral domain**.
 
 Based on aforementioned analysis and given a topology structure of a graph, we can optimize the graph signals by $argmin \;TV(X)$ easily. Obviously, $TV(X)$ has the smallest value $0$ when vertex signal has the same direction with the eigen vector associated the least eigen value $\lambda_1 = 0$. More importantly, we have obtained this kind of eigen vectors by trivial solutions. In a word, $TV(X)$ has the smallest value $0$ if the vertex signal is a fixed constant for all vertices of the whole graph or all vertices of current connected component. It is also intuitive to make this conclusion from definition of Laplacian Operator (**difference or variation**). On the contrary, $argmax \;TV(X)$ is a difficult optimization.
