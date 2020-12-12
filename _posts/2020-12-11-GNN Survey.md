@@ -10,11 +10,11 @@ tags: GNN, Survey
 
   In my opinion, graph neural networks is worth exploring within research field, not engineering field, especially large scale application. Anyway, this survey is a naive summarization of my recent reading. Writing in English is just a practice of my poor writing ability.
 
-  Without whistles and bells, there are some equivalent concepts or notions in graph terminology. First of all, graph signal is general representation, which stands for collection of node embeddings or node signals. Graph Fourier Transformation (GFT) is just discrete version Fourier Transformation (FT). Fourier Transformation (FT) converts temporal signals to frequency signal with the help of operator $e^{-iwt}$ (sine, cosine base function), and vice versa. In a similar way, GFT converts spatial domain to spectral domain with the help of $\phi^T$ (eigen base vector).
+  Without whistles and bells, there are some equivalent concepts or notions in graph terminology. First of all, graph signal is general representation, which stands for collection of node embeddings or node signals whatever domain we talk about. Graph Fourier Transformation (GFT) is just discrete version Fourier Transformation (FT). Fourier Transformation (FT) converts temporal signals to frequency signal with the help of operator $e^{-iwt}$ (sine, cosine base function), and vice versa. In a similar way, GFT converts spatial domain to spectral domain with the help of $\phi^T$ (eigen base vector).
 
-Note **spatial domain** is also known as **vertex domain** or **data space domain**. In the contrast, **Spectral domain** is also denoted as **feature space domain**
+Note **spatial domain** is also known as **vertex domain** , **graph domain** or **data space domain**. In the contrast, **Spectral domain** is also denoted as **feature space domain**.
 
-
+d
 
 <!--more-->
 
@@ -45,8 +45,8 @@ Note **spatial domain** is also known as **vertex domain** or **data space domai
 | $x^{v} \in R^{d}$ | feature of node $v$ |
 | $X^e \in R^{n \times c}$ | edge feature matrix |
 | $x^{e}_{(v,u)} \in R^{c}$ | feature of edge $e$ between $v$ and its neighbor $u$ |
-| $n$ | $n = |V|$ the number of nodes |
-| $m$ | $m = |E|$ the number of  edges |
+| $n$ | $n = \|V\|$ the number of nodes |
+| $m$ | $m = \|E\|$ the number of  edges |
 | $d$ | the dimension of node feature |
 | $h$ | the hidden dimension of node feature |
 | $c$ | the dimension of edge feature |
@@ -72,7 +72,7 @@ where \, \phi = [ \mu_1, \cdots, \mu_n], \, \Lambda =
 \end{matrix}\right] \\
 and \, \phi^{-1} = \phi^T, orthogomal \, matrix
 $$
-Now, let's find some interesting properties of $L$. we simply suppose that the dimension of node feature is 1. Note when it is more than 1, we can conduct the following procedure  in a **predictor-wise**  manner to get the same perspective, thus $X \in R^n$ and $x_i$ is a scalar feature of node $i$. In addition, we suppose the graph is constructed from hard kernel (limitation of soft kernel graph) , thus $A \in \{ 0, 1\}^{n \times n}$.
+Now, let's find some interesting properties of $L$. we simply suppose that the dimension of node feature is 1. Note when it is more than 1, we can conduct the following procedure  in a **predictor-wise**  manner to get the same perspective, thus $X = \left[\begin{matrix} x_1 & x_2 & \cdots & x_n\end{matrix}\right]^T \in R^n$ and $x_i$ is a scalar feature of node $i$. In addition, we suppose the graph is constructed from hard kernel (limitation of soft kernel graph) , thus $A \in \{ 0, 1\}^{n \times n}$.
 $$
 \begin{align}
 LX &= (D-A)X \\
@@ -88,7 +88,7 @@ x_{2i} + x_{2j} + \cdots \\
 \vdots \\
 x_{nj} + x_{nj}  + \cdots\\
 \end{matrix}\right] \\
-&where \, e_{1i} \, e_{1j} \, e_{2i} \, e_{2j} \, e_{ni} \, e_{nj} \in E \\
+&where \, e_{1i} \, e_{1j} \, e_{2i} \, e_{2j} \, e_{ni} \, e_{nj} \cdots \in E \\
 &= \left[\begin{matrix}
 \sum_{j \in N(1)}(x_1 - x_j) \\
 \sum_{j \in N(2)}(x_2 - x_j) \\
@@ -102,14 +102,14 @@ $$
 It is obvious
 
 - that **Laplacian Operator (Laplacian Eigen Map)** represents the **difference (or variation)** between every node and its neighbors.
-- that decomposition of Laplacian Eigen Map $L\mu = \lambda\mu$ has trivial solutions when $\lambda = 0$ (I will show $\lambda \ge 0$ next paragraph) and the number of trivial solutions (the multiplicity of the smallest eigen value $0$ ) is just the number of connected components (Note there is one trivial solution at least , that is with the same value for all nodes), because we can assign a fixed value for every connected components and make every node in this component with this value. **Same or not same** value(s) for different connected components is dependent on the specific situation.
+- that decomposition of Laplacian Eigen Map $L\mu = \lambda\mu$ has trivial solutions when $\lambda = 0$ (I will show $\lambda \ge 0$ next paragraph) and the number of trivial solutions (the multiplicity of the smallest eigen value $0$ ) is just **the number of connected components** (Note there is one trivial solution at least , that is with the same value for all nodes), because we can assign a fixed value for every connected components and make every node in this component with this value. **Same or not same** value(s) for different connected components is dependent on the specific situation.
 - that **spectral clustering** is a method for clustering ( dimensionality reduction and clustering), which just partitions the low-frequency base signals (regarding eigen vectors corresponding to **the second least** eigen value as reduced results).
 
-Let's take one more step in a $n$-element quadratic form or standard form:
+Let's take one more step in a $n$-element **quadratic form** or **standard form**:
 $$
 \begin{align}
     X^TLX &= \left[\begin{matrix}
-    x_1 & x_2 & \cdots x_n
+    x_1 & x_2 & \cdots & x_n
     \end{matrix}\right] \left[\begin{matrix}
     \sum_{j \in N(1)}(x_1 - x_j) \\
     \sum_{j \in N(2)}(x_2 - x_j) \\
@@ -121,9 +121,29 @@ $$
 $$
 It is apparent
 
-- that $L$ is a semi-positive definite matrix, and least eigen value $\lambda_1 = 0$ and I have proof its trivial solution s ahead of time.
-- Both $LX$ and $X^TLX$ represent the difference or variation between every node and its neighbors. we call the latter as **Total Variation**.
-- go one more step
+- that $L$ is a semi-positive definite matrix, and least eigen value $\lambda_1 = 0$ and I have proofed its trivial solutions ahead of time.
+
+- that both $LX$ and $X^TLX$ represent the difference or variation between every node and its neighbors. we call the latter as **Total Variation** (denoted as **$TV(X)$**).
+
+- Let's take one more step, supposing that $Y = \phi^TX = \left[\begin{matrix}
+  y_1 & y_2 & \cdots & y_n
+  \end{matrix}\right]^T$ is the embedding of **vertex signal/function** with the eigen vectors as the bases. $Y$ is also known as **eigen signal/function**.
+  $$
+  \begin{align}
+  TV(X) &= X^TLX = X^T\phi \Lambda \phi^T X \\
+  &= Y^T \Lambda Y \; (normalized \; form) \\
+  &= \sum_{i = 1}^{n}{\lambda_iy_i^2}
+  \end{align}
+  $$
+  Now we have drawn a clear conclusion that $TV(X)$ is the squared sum of signal residuals between every node and its neighbors in **spatial domain** and is the squared sum of eigen-value-weighted eigen function/signal (coordinate representations or embeddings) in **spectral domain**.
+
+Based on aforementioned analysis and given a topology structure of a graph, we can optimize the graph signals by $argmin \;TV(X)$ easily. Obviously, $TV(X)$ has the smallest value $0$ when vertex signal has the same direction with the eigen vector associated the least eigen value $\lambda_1 = 0$. More importantly, we have obtained this kind of eigen vectors by trivial solutions. In a word, $TV(X)$ has the smallest value $0$ if the vertex signal is a fixed constant for all vertices of the whole graph or all vertices of current connected component. It is also intuitive to make this conclusion from definition of Laplacian Operator (**difference or variation**). On the contrary, $argmax \;TV(X)$ is a difficult optimization.
+
+In addition, we can also observe the relations between **variation** and **spectral domain**. i.e., different eigen values have different contributions to the **variation/difference**. Specifically speaking, large eigen values contribute more than small eigen values. Therefore, if the embedding specific to the eigen vectors associated to large eigen values is **large**,  the graph signal tends to be **unsmooth, jittering and high-variance**. **On the contrary**, the graph signal is **smooth, mean and identical**. Please keep this observation in mind, I will formulate Graph Convolutional Networks from it.
+
+So far, I have summarized the properties of $L$, different views and optimization of $TV(X)$ and obtained a intuitive but amazingly powerful inference that smoothness of graph signals is strongly related (or equivalent to) magnitude of embeddings of different eigen vectors.
+
+
 
 
 
