@@ -215,12 +215,15 @@ In concept , **graph filtering** is a 2-step procedure that consists of **graph-
 Aforementioned procedure is intuitive because smoothness is equivalent to embeddings of eigen vectors corresponding to large or small eigen values. Changing embeddings is just to adapt smoothness of graph signals. We can also regard this in a different view:
 
 
+
 $$
 \begin{align}
 \hat{X} &= H X \\
 & where \; H = \phi h(\Lambda) \phi^T
 \end{align}
 $$
+
+
 In convolution theory, we conventionally call $H$ **filter matrix** and $h(\Lambda), h$ represent **response matrix** and **response function** respectively. Note **filter matrix** $H$ is also known as **Graph Shift Operator (GSO)**.
 
 It is obvious 
@@ -237,6 +240,8 @@ It is obvious
   - condition of inversible filtering: response function $h$ is inversible (we can replace original values with inversed values in the response matrix $h(\Lambda)$)
 
 Because there are a great number of response functions $h$, we can choose different $h$ to construct different response matrices $h(\Lambda)$. However, please keep it in mind that the easy but power $h$ and $h(\Lambda)$ is identical mapping and laplacian eigen map $L$ respectively on account of the variation/difference of $L$.  Approximately, we can conduct **Taylor Expansion** w.r.t. $L$ ( or $\lambda_i$) to fit any filter matrix (GSO) $H$ ( or $h$ function), which is computed as:
+
+
 $$
 \begin{align}
 h(\lambda_i) &= \sum_{k=0}^{K}{h_k \lambda_i^k} \\
@@ -253,9 +258,13 @@ H &= \phi h(\Lambda) \phi^T \\
 $$
 
 
+
+
 This equation is trivial due to both **algebra view ($\phi \Lambda^k \phi^T = L^k $)** and **chain-based filtering transformation view ($L^{k+1}(X) = L(L^k(X))$)**. The aforementioned kind of filter matrix also known as **Chebyshev Network**. We can remember it by 3 ways ( i.e., Taylor Expansion of response function $h(\lambda_i)$, response matrix $h(\Lambda)$ and filter matrix (GSO)) $H = \sum_{k=0}^{K}{h_k L^k} $. 
 
 Let's simplify this equation and explore the explicit relation between response function and filter matrix (note this relation is usually complicated and agnostic but here is a simple but generally power **Chebyshev Network**):
+
+
 
 
 $$
@@ -283,6 +292,8 @@ h_K
 &= diag(\Psi \pmb{h})
 \end{align}
 $$
+
+
 where is $\Psi \in R^{n \times K} $ **Vandermonde Matrix** (not **$n$-order Vandermonde Determinant**), $ \pmb{h} $ is a coefficient vector, which represents **response function** $h$ naturally. 
 
 when $n==K$, $ \pmb{h} = \Psi^{-1}diag^{-1}(H) $, but $K  << n$ is a common case.
