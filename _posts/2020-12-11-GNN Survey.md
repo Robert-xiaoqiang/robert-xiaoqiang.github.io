@@ -144,7 +144,6 @@ It is apparent
   y_1 & y_2 & \cdots & y_n
   \end{matrix}\right]^T$ is the embedding of **vertex signal/function** with the eigen vectors as the bases. $Y$ is also known as **eigen signal/function**.
 
-  
   $$
   \begin{align}
   TV(X) &= X^TLX = X^T\phi \Lambda \phi^T X \\
@@ -153,8 +152,9 @@ It is apparent
   \end{align}
   $$
   
+  
 
-  Now we have drawn a clear conclusion that $TV(X)$ is the squared sum of signal residuals between every node and its neighbors in **spatial domain** and is the squared sum of eigen-value-weighted eigen function/signal (coordinate representations or embeddings) in **spectral domain**.
+Now we have drawn a clear conclusion that $TV(X)$ is the squared sum of signal residuals between every node and its neighbors in **spatial domain** and is the squared sum of eigen-value-weighted eigen function/signal (coordinate representations or embeddings) in **spectral domain**.
 
 Based on aforementioned analysis and given a topology structure of a graph, we can optimize the graph signals by $argmin \;TV(X)$ easily. Obviously, $TV(X)$ has the smallest value $0$ when vertex signal has the same direction with the eigen vector associated the least eigen value $\lambda_1 = 0$. More importantly, we have obtained this kind of eigen vectors by trivial solutions. In a word, $TV(X)$ has the smallest value $0$ if the vertex signal is made up of a fixed constant for all vertices of the whole graph or all vertices of current connected component. It is also intuitive to make this conclusion from definition of Laplacian Operator (**difference or variation**). On the contrary, $argmax \;TV(X)$ is a difficult optimization.
 
@@ -168,7 +168,7 @@ So far, I have summarized the properties of $L$, different views and optimizatio
 
 In concept , **graph filtering** is a 2-step procedure that consists of **graph-spectrum transformation (graph Fourier transformation) and modified reconstruction respectively**. In equation, it is represented as following:
 
-- obtain embeddings using graph-spectrum transformation (map **from spatial to spectral**): 
+- obtain embeddings using graph-spectrum transformation (map **from spatial domain to spectral domain**): 
 
   
   $$
@@ -180,10 +180,9 @@ In concept , **graph filtering** is a 2-step procedure that consists of **graph-
   \end{matrix}\right]
   $$
   
+- modify embeddings explicitly to smooth or unsmoooth the graph signals: 
 
-- modify embeddings explicitly to smooth the graph signal: 
 
-  
   $$
   \begin{align}
   \hat{Y} = h(\Lambda)Y = \left[\begin{matrix}
@@ -204,8 +203,7 @@ In concept , **graph filtering** is a 2-step procedure that consists of **graph-
   \end{matrix}\right]
   \end{align}
   $$
-
-- 
+  
 
 - reconstruct the spatial graph signal (vertex function/signal) using modified embeddings (map **from spectral to spatial**):
 
@@ -223,14 +221,79 @@ $$
 & where \; H = \phi h(\Lambda) \phi^T
 \end{align}
 $$
-In convolution theory, we conventionally call $H$ **filter matrix** and $h(\Lambda), h$ represent **response matrix** and **response function** respectively.
+In convolution theory, we conventionally call $H$ **filter matrix** and $h(\Lambda), h$ represent **response matrix** and **response function** respectively. Note **filter matrix** $H$ is also known as **Graph Shift Operator (GSO)**.
 
 It is obvious 
 
-- that graph filtering is just a linear transformation with filter matrix $H$
+- that graph filtering is just **a linear transformation** with filter matrix $H$.
 - that different filter matrix $H$ will generate different transformed graph signals, such as
   - if $h$ is an identical mapping, $H = L$, $\hat{X} = LX$ is smoother than $X$ naturally (due to residuals). Furthermore, $L^kX$ will smoother than $L^{k-1}X$ (due to residuals of residuals), note $L^0X = X$. This kind of filter matrices is names **Chebyshev Base Filter Matrix** and I will discuss it later.
-  - if  $h$ is a zero mapping, $H = I_n$, $\hat{X} = X$ do nothing meaningful.
+  - if  $h$ is an one mapping, $H = I_n$, $\hat{X} = X$ do nothing meaningful.
+  - if $h$ is a zero mapping, $H = 0, \hat{X} = 0$ do nothing meaningful.
+  - furthermore, although we have no explicit formations of response function $h$, we still claim that bot **adjacence matrix $A$** and **degree diagonal matrix D** are **GSOs**. I will regard $A$ as a GSO in later discussion of **GCN**.
+- that properties of filter matrices / graph shift operators (GSOs) can be summarized as following:
+  - linear transformation: $H(\alpha X + \beta Y) = \alpha HX + \beta HY$
+  - commutative law (swappable): $H_1(H_2X) = (H_1H_2)X$
+  - condition of inversible filtering: response function $h$ is inversible (we can replace original values with inversed values in the response matrix $h(\Lambda)$)
+
+Because there are a great number of response functions $h$, we can choose different $h$ to construct different response matrices $h(\Lambda)$. However, please keep it in mind that the easy but power $h$ and $h(\Lambda)$ is identical mapping and laplacian eigen map $L$ respectively on account of the variation/difference of $L$.  Approximately, we can conduct **Taylor Expansion** w.r.t. $L$ ( or $\lambda_i$) to fit any filter matrix (GSO) $H$ ( or $h$ function), which is computed as:
+$$
+\begin{align}
+h(\lambda_i) &= \sum_{k=0}^{K}{h_k \lambda_i^k} \\
+h(\Lambda) &= \sum_{k=0}^{K}{h_k \Lambda^k} \\
+H &= \phi h(\Lambda) \phi^T \\
+&= \phi (\sum_{k=0}^{K}{h_k \Lambda^k}) \phi^T \\
+&= \sum_{k=0}^{K}{h_k L^k} = \left[\begin{matrix}
+\sum_{k=0}^{K}{h_k \lambda_1^k} & 0 & \cdots & 0 \\
+0 & \sum_{k=0}^{K}{h_k \lambda_2^k} & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & \sum_{k=0}^{K}{h_k \lambda_n^k}
+\end{matrix}\right]\\
+\end{align}
+$$
+
+
+This equation is trivial due to both **algebra view ($\phi \Lambda^k \phi^T = L^k $)** and **chain-based filtering transformation view ($L^{k+1}(X) = L(L^k(X))$)**. The aforementioned kind of filter matrix also known as **Chebyshev Network**. We can remember it by 3 ways ( i.e., Taylor Expansion of response function $h(\lambda_i)$, response matrix $h(\Lambda)$ and filter matrix (GSO)) $H = \sum_{k=0}^{K}{h_k L^k} $. 
+
+Let's simplify this equation and explore the explicit relation between response function and filter matrix (note this relation is usually complicated and agnostic but here is a simple but generally power **Chebyshev Network**):
+
+
+$$
+\begin{align}
+H &= \left[\begin{matrix}
+\sum_{k=0}^{K}{h_k \lambda_1^k} & 0 & \cdots & 0 \\
+0 & \sum_{k=0}^{K}{h_k \lambda_2^k} & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & \sum_{k=0}^{K}{h_k \lambda_n^k}
+\end{matrix}\right] \\
+&= diag(\left[\begin{matrix}
+\sum_{k=0}^{K}{h_k \lambda_1^k} & \sum_{k=0}^{K}{h_k \lambda_2^k} & \cdots & \sum_{k=0}^{K}{h_k \lambda_n^k}
+\end{matrix}\right]^T) \\
+&= diag(\left[\begin{matrix} 
+1 & \lambda_1 & \lambda_1^2 & \cdots & \lambda_1^K \\
+1 & \lambda_2 & \lambda_2^2 & \cdots & \lambda_2^K \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+1 & \lambda_n & \lambda_n^2 & \cdots & \lambda_n^K \\
+\end{matrix}\right] \left[\begin{matrix}
+h_0 \\
+h_1 \\
+\vdots \\
+h_K
+\end{matrix}\right]) \\
+&= diag(\Psi \pmb{h})
+\end{align}
+$$
+where is $\Psi \in R^{n \times K} $ **Vandermonde Matrix** (not **$n$-order Vandermonde Determinant**), $ \pmb{h} $ is a coefficient vector, which represents **response function** $h$ naturally. 
+
+when $n==K$, $ \pmb{h} = \Psi^{-1}diag^{-1}(H) $, but $K  << n$ is a common case.
+
+
+
+So far I have obtained a relatively useful conclusion on graph filtering and Chebyshev Network best practice. However specifying response function $h$ or $\pmb{h}$ is not a wise idea, we wanna optimize it by a **differentiable and end-to-end** manner.
+
+
+
+### Graph Convolutional Networks
 
 ## Local View
 
