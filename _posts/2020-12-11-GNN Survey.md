@@ -14,7 +14,7 @@ tags: GNN, Survey
 
   Without whistles and bells, there are some equivalent concepts or notions in graph terminology. First of all, graph signal is general representation, which stands for collection of node embeddings or node signals whatever domain we talk about. Graph Fourier Transformation (GFT) is just discrete version Fourier Transformation (FT). Fourier Transformation (FT) converts temporal signals to frequency signal with the help of operator $e^{-iwt}$ (sine, cosine base function), and vice versa. In a similar way, GFT converts spatial domain to spectral domain with the help of $\phi^T$ (eigen base vector).
 
-Note **spatial domain** is also known as **vertex domain** , **graph domain** or **data space domain**. In the contrast, **Spectral domain** is also denoted as **feature space domain**.
+  Note **spatial domain** is also known as **vertex domain** , **graph domain** or **data space domain**. In the contrast, **Spectral domain** is also denoted as **feature space domain**.
 
 
 
@@ -76,11 +76,11 @@ where \, \phi = [ \mu_1, \cdots, \mu_n], \, \Lambda =
 \vdots & \vdots & \ddots & \vdots \\
 0 & 0 & \cdots & \lambda_n
 \end{matrix}\right] \\
-and \, \phi^{-1} = \phi^T, orthogomal \, matrix
+and \, \phi^{-1} = \phi^T, \, orthogomal \, matrix
 $$
 
 
-Now, let's find some interesting properties of $L$. we simply suppose that the dimension of node feature is 1. Note when it is more than 1, we can conduct the following procedure  in a **predictor-wise**  manner to get the same perspective, thus $X = \left[\begin{matrix} x_1 & x_2 & \cdots & x_n\end{matrix}\right]^T \in R^n$ and $x_i$ is a scalar feature of node $i$. In addition, we suppose the graph is constructed from hard kernel (limitation of soft kernel graph) , thus $A \in \{ 0, 1\}^{n \times n}$.
+Now, let's find some interesting properties of $L$. we simply suppose that the dimension of node feature is 1. Note when it is more than 1, we can conduct the following procedure  in a **predictor-wise**  manner to get the same perspective, thus $X = \left[\begin{matrix} x_1 & x_2 & \cdots & x_n\end{matrix}\right]^T \in R^n$ and $x_i$ is a scalar feature of node $i$.
 
 
 $$
@@ -93,17 +93,17 @@ x_2d_{22} \\
 x_nd_{nn}
 \end{matrix}\right]  - 
 \left[\begin{matrix}
-x_{1i} + x_{1j} + \cdots \\
-x_{2i} + x_{2j} + \cdots \\
+x_{1i}a_{1i} + x_{1j}a_{1j} + \cdots \\
+x_{2i}a_{2i} + x_{2j}a_{2j} + \cdots \\
 \vdots \\
-x_{nj} + x_{nj}  + \cdots\\
+x_{ni}a_{ni} + x_{nj}a_{nj}  + \cdots\\
 \end{matrix}\right] \\
 &where \, e_{1i} \, e_{1j} \, e_{2i} \, e_{2j} \, e_{ni} \, e_{nj} \cdots \in E \\
 &= \left[\begin{matrix}
-\sum_{j \in N(1)}(x_1 - x_j) \\
-\sum_{j \in N(2)}(x_2 - x_j) \\
+\sum_{j \in N(1)}a_{1j}(x_1 - x_j) \\
+\sum_{j \in N(2)}a_{2j}(x_2 - x_j) \\
 \vdots \\
-\sum_{j \in N(n)}(x_n - x_j)
+\sum_{j \in N(n)}a_{nj}(x_n - x_j)
 \end{matrix}\right]
 \end{align}
 $$
@@ -123,13 +123,13 @@ $$
 \begin{align}
     X^TLX &= \left[\begin{matrix}
     x_1 & x_2 & \cdots & x_n
-    \end{matrix}\right] \left[\begin{matrix}
-    \sum_{j \in N(1)}(x_1 - x_j) \\
-    \sum_{j \in N(2)}(x_2 - x_j) \\
+    \end{matrix}\right]  \left[\begin{matrix}
+    \sum_{j \in N(1)}a_{1j}(x_1 - x_j) \\
+    \sum_{j \in N(2)}a_{2j}(x_2 - x_j) \\
     \vdots \\
-    \sum_{j \in N(n)}(x_n - x_j)
+    \sum_{j \in N(n)}a_{nj}(x_n - x_j)
     \end{matrix}\right] \\
-    &= \sum_{e_{ij} \in E}{(x_i - x_j)^2}
+    &= \sum_{e_{ij} \in E}{a_{ij}(x_i - x_j)^2}
 \end{align}
 $$
 
@@ -183,7 +183,7 @@ In concept , **graph filtering** is a 2-step procedure that consists of **graph-
 - modify embeddings explicitly to smooth or unsmoooth the graph signals: 
 
 
-  $$
+$$
   \begin{align}
   \hat{Y} = h(\Lambda)Y = \left[\begin{matrix}
   h(\lambda_1) & 0 & \cdots & 0 \\
@@ -202,8 +202,8 @@ In concept , **graph filtering** is a 2-step procedure that consists of **graph-
   h(\lambda_n)y_n
   \end{matrix}\right]
   \end{align}
-  $$
-  
+$$
+
 
 - reconstruct the spatial graph signal (vertex function/signal) using modified embeddings (map **from spectral to spatial**):
 
@@ -294,7 +294,7 @@ h_K
 $$
 
 
-where is $\Psi \in R^{n \times K} $ **Vandermonde Matrix** (not **$n$-order Vandermonde Determinant**), $ \pmb{h} $ is a coefficient vector, which represents **response function** $h$ naturally. 
+where $\Psi \in R^{n \times K} $  is **Vandermonde Matrix** (not **$n$-order Vandermonde Determinant**), $ \pmb{h} $ is a coefficient vector, which represents **response function** $h$ naturally. 
 
 when $n==K$, $ \pmb{h} = \Psi^{-1}diag^{-1}(H) $, but $K  << n$ is a common case.
 
@@ -305,6 +305,51 @@ So far I have obtained a relatively useful conclusion on graph filtering and Che
 
 
 ### Graph Convolutional Networks
+
+Let's review the convolution theory of digital signal processing (DSP) field. **Convolution** is a **binary operation** to transform the signals for the convenience of down-stream processing. Specifically, given signals $f$ and $g$, $1$-d convolution on them is computed as:
+
+
+$$
+(g \star f) (x)= \int f(x-t) g(t) dt
+$$
+
+
+It is obvious that we transform from $t$ domain to $x$ domain. Taking this convolution to Fourier Transformation in continuous space, we find that it just a special case with $g(t) = e^{-iwt}$:
+
+
+$$
+\mathcal{F} f(x) = \int f(x-t) e^{-iwt}dt
+$$
+
+
+Fourier Transformation has an amazing property (also known as **theorem of convolution**) that Fourier Transformation of convoluted signals is just convolution of transformed signals:
+
+
+$$
+\mathcal{F} (g \star f) = \mathcal{F} g \star \mathcal{F}f
+$$
+
+
+Now we can also adapt this property directly to discrete space (**Graph Convolution**).
+
+The motivation of **graph convolution** is that conducting convolution of original space (**spatial domain**) is difficult, while this is trivial (**simply multiply**) in transformed space (**spectral domain**) due to the strip of correlation using eigen decomposition. Indeed, it also encompasses **unnecessary global view** under some circumstance. Anyway we can rewrite it using notations of graph theory:
+
+
+$$
+\begin{align}
+g \star f &= \mathcal{F}^{-1}(\mathcal{F} g \star \mathcal{F} f) \\
+&= \phi(\phi^T g \odot \phi^T f) \\
+&= \phi \left(diag(\phi^T g) \phi^T f \right) \\
+&= \left( \phi \; diag(\phi^T g) \phi^T \right) f \\
+\end{align}
+$$
+where $\odot$ represents element-wise multiplication (**Hadamard Product**) and $\phi$ is eigenvectors of graph corresponding to signal $g$ (not $f$). Now we can find that **graph convolution** takes one more step than **graph fourier transformation** (graph filtering), That is **graph fourier transformation** is to change the smoothness of **its own signals** according to **its own structure** (eigen base), while **graph convolution** is  to change the smoothness of **others** according to **its**. In other words, there is no notion or concept of **response function** (explicit or implicit) in graph convolution. **Response matrix** is not $h(\Lambda)$ any longer but $diag(\phi^Tg)$, which is just $\hat{g}$ (embeddings or transformed signals of $g$ using its own structure), note that this is  just a standard graph filtering process.
+
+Now let's parameterize the graph convolution. There are 3 kinds of scheme:
+
+- parameterize the filter matrix $H_{\theta} = \phi \; diag(\phi^T g) \phi^T \in R^{n \times n}$.
+- parameterize the response matrix (also known as fourier embeddings of other signals) $R_{\theta} = diag(\phi^T g) \in R^{n \times n}$, but $n$ parameters.
+- constrain the response matrix and make it similar to the counterpart of graph filtering, that is, $R_{\theta} = h(\Lambda) = \sum_{k=0}^{K}{h_k \Lambda^k} $, but $K$ parameters. note $K << n$ in general.
 
 ## Local View
 
