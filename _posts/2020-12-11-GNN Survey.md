@@ -334,6 +334,7 @@ Now we can also adapt this property directly to discrete space (**Graph Convolut
 
 The motivation of **graph convolution** is that conducting convolution of original space (**spatial domain**) is difficult, while this is trivial (**simply multiply**) in transformed space (**spectral domain**) due to the strip of correlation using eigen decomposition. Indeed, it also encompasses **unnecessary global view** under some circumstance. Anyway we can rewrite it using notations of graph theory:
 
+s
 
 $$
 \begin{align}
@@ -343,6 +344,8 @@ g \star f &= \mathcal{F}^{-1}(\mathcal{F} g \star \mathcal{F} f) \\
 &= \left( \phi \; diag(\phi^T g) \phi^T \right) f \\
 \end{align}
 $$
+
+
 where $\odot$ represents element-wise multiplication (**Hadamard Product**) and $\phi$ is eigenvectors of graph corresponding to signal $g$ (not $f$). Now we can find that **graph convolution** takes one more step than **graph fourier transformation** (graph filtering), That is **graph fourier transformation** is to change the smoothness of **its own signals** according to **its own structure** (eigen base), while **graph convolution** is  to change the smoothness of **others** according to **its**. In other words, there is no notion or concept of **response function** (explicit or implicit) in graph convolution. **Response matrix** is not $h(\Lambda)$ any longer but $diag(\phi^Tg)$, which is just $\hat{g}$ (embeddings or transformed signals of $g$ using its own structure), note that this is  just a standard graph filtering process.
 
 Now let's parameterize the graph convolution. There are 3 kinds of scheme:
