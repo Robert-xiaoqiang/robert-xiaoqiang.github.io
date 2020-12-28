@@ -183,7 +183,7 @@ In concept , **graph filtering** is a 2-step procedure that consists of **graph-
 - modify embeddings explicitly to smooth or unsmoooth the graph signals: 
 
 
-  $$
+$$
   \begin{align}
   \hat{Y} = h(\Lambda)Y = \left[\begin{matrix}
   h(\lambda_1) & 0 & \cdots & 0 \\
@@ -202,8 +202,8 @@ In concept , **graph filtering** is a 2-step procedure that consists of **graph-
   h(\lambda_n)y_n
   \end{matrix}\right]
   \end{align}
-  $$
-  
+$$
+
 
 - reconstruct the spatial graph signal (vertex function/signal) using modified embeddings (map **from spectral to spatial**):
 
