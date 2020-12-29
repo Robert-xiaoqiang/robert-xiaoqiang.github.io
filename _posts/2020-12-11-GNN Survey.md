@@ -306,7 +306,7 @@ So far I have obtained a relatively useful conclusion on graph filtering and Che
 
 ### Graph Convolutional Networks
 
-Let's review the convolution theory of digital signal processing (DSP) field. **Convolution** is a **binary operation** to transform the signals for the convenience of down-stream processing. Specifically, given signals $f$ and $g$, $1$-d convolution on them is computed as:
+Let's review the convolution theory of digital signal processing (DSP) field. **Convolution** is a **binary operation** to transform the signals for the convenience of down-stream processing. Specifically, given signals $f$ and $g$, $1$-d convolution on them is computed as
 
 
 $$
