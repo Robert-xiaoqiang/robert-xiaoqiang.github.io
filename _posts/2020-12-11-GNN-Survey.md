@@ -1,7 +1,7 @@
 ---
 title: GNN Survey
 key: 202012110
-tags: GNN, Survey
+tags: GNN Survey
 ---
 
 [TOC]
