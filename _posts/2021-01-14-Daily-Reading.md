@@ -19,6 +19,12 @@ tags: Reading
   - `anti-lm`: penalize not only high-frequency, generic responses but also grammatical sentence $\rightarrow$ weights of tokens decrease monotonically (early important + lm dominant later)
   - `bidi-lm`: not searching but reranking (generate grammatical sequences and then re-rank them according to the objective of inversed probability)
 
+
+
+<!--more-->
+
+
+
 ### ClarQ: A large-scale and diverse dataset for Clarification Question Generation
 
 ### Summary & Intuitions
