@@ -1,7 +1,7 @@
 ---
 title: Subjective, Objective, Assumption and Modeling
 key: 202103030
-tags: MLE, Bayesian
+tags: MLE Bayesian
 ---
 
 # Subjective, Objective, Assumption and Modeling
@@ -28,30 +28,46 @@ There are 2 main methods to estimate parameters in statistics. i.e. **frequency-
 
 - Given observations $D$ (i.i.d. experiments) and unknown parameter $\theta$, **frequency-based method (MLE)** maximizes the unknown belief from known experiments. That is, if it happens, it is more likely to happen once again. In detail, we maximize the probability of observed events $D$ conditioned on the parameter $\theta$.
 
+  
+
 $$
 \theta^\star = \mathop{\arg\max}_\theta \{P(D|\theta)\}
 $$
 
+
+
 - In the perspective of **Bayesian-based method**, our goal is not to find a fixed parameter. On the contrary, we need delineate the distribution behind the parameter, because of **the aforementioned key idea of Bayesian-based method**. Specifically, $\theta$ is driven by a distribution, namely **posterior distribution $P(\theta|D)$**. According to **Bayesian Formula**:
+  
+  
   $$
   P(\theta|D) = \frac{P(D|\theta)P(\theta)}{P(D)} = \frac{P(D|\theta)P(\theta)}{\int_\theta P(D|\theta)P(\theta) d\theta}
-  $$
+$$
+  
+  
   In the practical case, there are 2 kinds of approximation:
-
+  
   - In order to obtain a fixed value from a posterior distribution, we can force the posterior to be maximum (**Maximum A Posterior**), which is denoted as:
+    
+    
     $$
     \begin{align}
-    \theta^\star &= \mathop{\arg\max}_\theta \{P(\theta|D)\} \\
+  \theta^\star &= \mathop{\arg\max}_\theta \{P(\theta|D)\} \\
     &= \mathop{\arg\max}_\theta\{ \frac{P(D|\theta)P(\theta)}{\int_\theta P(D|\theta)P(\theta) d\theta} \} \\
     &= \mathop{\arg\max}_\theta\{P(D|\theta) P(\theta)\}
     \end{align}
-    $$
+  $$
+    
+    
     Compared to MLE, the objective (after logarithm) has one more item than it. we can regard the extra item as regularization w.r.t. $\theta$ , which is from **the prior distribution $$P(\theta)$$**. Note that this kind of approximation is totally dependent on the assumption of prior.
-
+    
   - A stronger approximation is that posterior has the same distribution as prior, namely **Conjugate Distribution**. The prior is regarded as **conjugate prior** w.r.t. likelihood $P(D|\theta)$.
 
 ## Theoretical background
 
 - MLE maximizes the belief, so it relies on experiments heavily. In other words, more experiments, more confident. (证明见：霍夫丁不等式， 大数定律)
 - MAP is completely based on Bayesian Formula, which is just a classic viewpoint of Bayesian Party. (类似的：万物皆分布， 皆由分布背后的参数驱动， 例：贝叶斯神经网络)
+
+
+
+
 
