@@ -18,21 +18,21 @@ Suppose that we have an intractable conditional density $p(z|x)$, and we'd like 
 
 
 $$
-q^{\star} = \arg\min KL \left(q(z|x) || p(z|x) \right)
+q^{\star} = \arg\min KL \left(q(z|x) \lVert p(z|x) \right)
 $$
 
 
-where $KL(\cdot||\cdot)$ means Kullback-Leibler divergence. Let's expand this formula
+where $KL(\cdot\lVert\cdot)$ means Kullback-Leibler divergence. Let's expand this formula
 
 
 $$
 \begin{align}
-KL \left(q(z|x) || p(z|x) \right) &= \sum_{z}-q(z|x)\log\frac{p(z|x)}{q(z|x)} \\
+KL \left(q(z|x) \lVert p(z|x) \right) &= \sum_{z}-q(z|x)\log\frac{p(z|x)}{q(z|x)} \\
 &= \sum_{z}-q(z|x)\log \frac{p(z)p(x|z)}{q(z|x)p(x)} \textit{(Bayesian Variation)} \\
 &=\sum_{z}-q(z|x)\log \frac{p(z)p(x|z)}{q(z|x)} + \sum_{z}q(z|x)\log p(x)
 \end{align} \\
 \Rightarrow \\
-\log p(x) = KL \left(q(z|x) || p(z|x) \right) + \sum_{z}q(z|x)\log \frac{p(z)p(x|z)}{q(z|x)}
+\log p(x) = KL \left(q(z|x) \lVert p(z|x) \right) + \sum_{z}q(z|x)\log \frac{p(z)p(x|z)}{q(z|x)}
 $$
 
 
@@ -44,7 +44,7 @@ Now, we have a very inspiring equation consisting of two items. The left-hand si
 $$
 \begin{align}
 ELBO &= \sum_{z}q(z|x)\log p(x|z) + \sum_{z}q(z|x)\log \frac{p(z)}{q(z|x)} \\
-&= \mathbb{E}_{\sim q(z|x)}\left( \log p(x|z) \right) - KL(q(z|x)||p(z))
+&= \mathbb{E}_{\sim q(z|x)}\left( \log p(x|z) \right) - KL(q(z|x) \lVert p(z))
 \end{align}
 $$
 
@@ -94,8 +94,8 @@ It is obvious that the aforementioned two-steps **VAE** is just **variational in
 
 $$
 \begin{align}
-ELBO_{vae} &= \mathbb{E}_{\sim q(z|x)}\left( \log p(x|z) \right) - KL(q(z|x)||p(z)) \\
-&= \mathbb{E}_{\sim x}\left( \log p(\hat{x}|x) \right) - KL(q(z|x)||p(z)) \\
+ELBO_{vae} &= \mathbb{E}_{\sim q(z|x)}\left( \log p(x|z) \right) - KL(q(z|x) \lVert p(z)) \\
+&= \mathbb{E}_{\sim x}\left( \log p(\hat{x}|x) \right) - KL(q(z|x) \lVert p(z)) \\
 \end{align}
 $$
 
@@ -105,10 +105,10 @@ Generally, we assume that **the sampled x and prior of z obey multivariate Gauss
 
 $$
 \begin{align}
-p(\hat{x}|x) &= e^{-||x - \hat{x}||_2 } \\
+p(\hat{x}|x) &= e^{-\lVert x - \hat{x}\lVert_2 } \\
 p(z) &= \mathcal{N}(\mathbb{0}, \mathbb{I}) \\
 q(z|x) &= \mathcal{N} \left( \mu_x, \Sigma_x \right)\\
-ELBO_{vae} &= \sum_{x}\left\{-||x-\hat{x}||_2 - KL \left( \mathcal{N} \left( \mu_x, \Sigma_x \right)||\mathcal{N}(\mathbb{0}, \mathbb{I}) \right) \right \}
+ELBO_{vae} &= \sum_{x}\left\{-\lVert x-\hat{x}\lVert_2 - KL \left( \mathcal{N} \left( \mu_x, \Sigma_x \right) \lVert \mathcal{N}(\mathbb{0}, \mathbb{I}) \right) \right \}
 \end{align}
 $$
 
@@ -121,7 +121,7 @@ During a training step, $\mu_x$ and $\Sigma_x$ are computed by current sample (b
 
 
 $$
-\mathcal{L}_{vae} = \sum_{x}\left\{ ||x - \hat{x}||_2 + \frac{1}{2}\left(  tr\left( \Sigma_x \right) + \mu_x^T\mu_x-d-\log \det \left( \Sigma_x \right) \right) \right\}
+\mathcal{L}_{vae} = \sum_{x}\left\{ \lVert x - \hat{x}\lVert_2 + \frac{1}{2}\left(  tr\left( \Sigma_x \right) + \mu_x^T\mu_x-d-\log \det \left( \Sigma_x \right) \right) \right\}
 $$
 
 
