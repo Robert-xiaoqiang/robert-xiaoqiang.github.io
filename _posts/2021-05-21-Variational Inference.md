@@ -22,7 +22,7 @@ q^{\star} = \arg\min KL \left(q(z|x) || p(z|x) \right)
 $$
 
 
-where $KL(\cdot||\cdot)$ means Kullback-Leibler divergence. Let's expand this formula
+where $KL(\cdot \Vert \cdot)$ means Kullback-Leibler divergence. Let's expand this formula
 
 
 $$
