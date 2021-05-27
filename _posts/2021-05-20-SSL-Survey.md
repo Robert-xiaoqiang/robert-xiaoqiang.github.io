@@ -90,5 +90,12 @@ The statistical motivation and main principles of AE has been introduced and rev
 
 
 
-## Contrastive Methods
+## Contrastive Methods (Instance-based Learning)
 
+
+
+### Yann LeCun proposed dark matter of artificial intelligence
+
+
+
+### Context-instance
