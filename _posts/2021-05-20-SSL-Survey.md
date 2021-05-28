@@ -78,7 +78,7 @@ Yoshua Bengio proposed a idea that a good representation is one in which the dat
 
 ### Auto-encoder (AE)
 
-The statistical motivation and main principles of AE has been introduced and reviewed in-depth in my this [post](https://blog.qindomitable.top/2021/05/21/Variational-Inference.html). Now we will review some AE based SSL models, especially distinguish them by fields of study and self-supervisions.
+AE is originated from Restricted Bolztmann Machine (RBM) and the statistical motivation and main principles of AE has been introduced and reviewed in-depth in my this [post](https://blog.qindomitable.top/2021/05/21/Variational-Inference.html). Now we will review some AE based SSL models, especially distinguish them by fields of study and self-supervisions.
 
 | Model              | Fields | Self-supervision | Comments |
 | ------------------ | ------ | ---------------- | -------- |
@@ -99,3 +99,7 @@ The statistical motivation and main principles of AE has been introduced and rev
 
 
 ### Context-instance
+
+### Instance-instance
+
+- PIRL, ExemplarCNN, Non-Parametric ID, SimCLR, MoCo
