@@ -63,7 +63,7 @@ Different SSL AR models vary in the sequential modeling and utilization of outpu
 
 
 
-### Flow-based Model (FM)  or Probabilistic Generative Model
+### Flow-based Model (FM)  or Probabilistic Generative Model (PGM)
 
 Yoshua Bengio proposed a idea that a good representation is one in which the data has a distribution that is easy to model. In the FM, this kind of goodness is described as **easy-to-determinant and easy-to-inverse** attributes. Different SSL models vary in the definition of pretty distributions.
 
@@ -78,15 +78,15 @@ Yoshua Bengio proposed a idea that a good representation is one in which the dat
 
 ### Auto-encoder (AE)
 
-AE is originated from Restricted Bolztmann Machine (RBM) and the statistical motivation and main principles of AE has been introduced and reviewed in-depth in my this [post](https://blog.qindomitable.top/2021/05/21/Variational-Inference.html). Now we will review some AE based SSL models, especially distinguish them by fields of study and self-supervisions.
+AE is originated from **Restricted Boltzmann Machine (RBM)** and the statistical motivation and main principles of AE has been introduced and reviewed in-depth in my this [post](https://blog.qindomitable.top/2021/05/21/Variational-Inference.html). Now we will review some AE based SSL models, especially distinguish them by fields of study and self-supervisions.
 
-| Model              | Fields | Self-supervision | Comments |
-| ------------------ | ------ | ---------------- | -------- |
-| word2vec, FastText | NLP    |                  |          |
-| DeepWalk           | Graph  |                  |          |
-| VGAE               | Graph  |                  |          |
-| BERT               | NLP    |                  |          |
-| VQ-VAE             |        |                  |          |
+| Model              | Fields | Self-supervision                                             | Comments                                                     |
+| ------------------ | ------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| word2vec, FastText | NLP    | CBOW: context tokens -> input tokens (pairwise)<br />Skip-gram: inputs -> context tokens (pairwise) | Key difference between word2vec and FastText:<br />FastText uses not a word token but the summation of  character n-gram as the word representation. |
+| DeepWalk, LINE     | Graph  | Skip-gram on vertices sequence                               | DeepWalk: Skip-gram is employed to predict the vertex on the sliding window based on the representation of current vertex. CBOW is unfeasible due to the **large** length of the random walk path, especially on large graph. <br />LINE samples vertices from not the random walk path but the neighbor nodes. (relatively local structure) |
+| VGAE               | Graph  |                                                              |                                                              |
+| BERT               | NLP    |                                                              |                                                              |
+| VQ-VAE             | CV     |                                                              |                                                              |
 
 
 
