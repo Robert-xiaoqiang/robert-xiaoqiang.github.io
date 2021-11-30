@@ -1,7 +1,7 @@
 ---
 title: Practice in Huggingface Transformers
 key: 202111290
-tags: Tokenizer, PLMs
+tags: Tokenizer PLMs
 ---
 
 # Practice in Huggingface Transformers
@@ -24,6 +24,8 @@ This post is just a note summarizing my practice on Pre-trained Language Models 
 - text modeling: `str`, `List[str]`(pre-tokenized sequence, aka whitespace-tokenized sequence) , `List[int]`(after invoking `tokenizer.encode` and requiring padding or truncation).
 - batched text modeling: add a batch dimension for the above format, and the ambiguity of  `List[str]` will be addressed by the argument `is_split_into_words = False/True`.
 - build input: from version `4.4.2`, `tokenizer.__call__` can handle all the situations, including a single text, a single pair of texts, a batch of texts and a batch of pairs of texts.
+  -  `tokenizer.encode` can also handle a single text input, but it cannot preprocess the batched input. This is a function with very limited usage scenarios.
+  - from version `4.4.2`, `tokenizer.encode_plus` and `tokenizer.batch_encode_plus` both are deprecated and we should not assume that they are invoked in the implementation of `tokenizer.__call__` in the future.
 - what is `token_type_ids`
   - It is a mask to reflect that the current token belongs to which input sequence.
   - only when `return_token_type_ids = True` can we make our tokenization clear and useful.

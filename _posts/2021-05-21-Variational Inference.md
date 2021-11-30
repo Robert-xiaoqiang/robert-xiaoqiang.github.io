@@ -1,7 +1,7 @@
 ---
 title: Variational Inference
 key: 202105210
-tags: Variational, AE, VAE
+tags: Variational AE VAE
 ---
 
 # Variational Inference
